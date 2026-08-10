@@ -1,0 +1,448 @@
+body{
+    background:#f5f7fb;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.shipping-card{
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    height:650px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.shipping-section {
+    background:#f5f7fb;
+}
+
+.row {
+    align-items: stretch;
+}
+
+.map-card{
+    background:white;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    height:650px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.distance-box{
+    height:70px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+#map{
+    height:calc(100% - 70px);
+
+    width:100%;
+}
+
+.form-control,
+.form-select{
+    height:55px;
+}
+
+.btn{
+    font-size:18px;
+}
+/* Tom Select input styling */
+.ts-control {
+    min-height: 45px;
+    border-radius: 12px;
+    border: 1px solid #ced4da;
+    padding: 8px 14px;
+    font-size: 16px;
+    background-color: #fff;
+    box-shadow: none;
+}
+
+/* When the field is clicked */
+.ts-control.focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
+}
+
+/* Placeholder text */
+.ts-control input::placeholder {
+    color: #6c757d;
+}
+
+/* Dropdown list */
+.ts-dropdown {
+    border-radius: 12px;
+    border: 1px solid #ced4da;
+    margin-top: 5px;
+}
+
+/* Dropdown options */
+.ts-dropdown .option {
+    padding: 10px 14px;
+}
+
+/* Hover option */
+.ts-dropdown .option:hover {
+    background-color: #f1f5ff;
+}
+.ts-wrapper {
+    width: 100%;
+}
+
+.ts-control {
+    min-height: 50px !important;
+    border-radius: 15px !important;
+    border: 1px solid #ced4da !important;
+    padding: 10px 15px !important;
+    font-size: 16px;
+    background: white !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Form Container */
+.quote-form {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+
+/* Section Titles */
+.form-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1b1b1b;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+
+/* Small line under titles */
+.form-title::after {
+    content: "";
+    display: block;
+    width: 45px;
+    height: 3px;
+    background: #0d6efd;
+    margin-top: 8px;
+    border-radius: 10px;
+}
+
+
+/* Labels */
+.quote-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+
+/* Input Fields */
+.custom-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 18px;
+
+    border: 1px solid #ddd;
+    border-radius: 25px;
+
+    font-size: 15px;
+    color: #333;
+
+    outline: none;
+    transition: all 0.3s ease;
+
+    margin-bottom: 20px;
+}
+
+
+/* Textarea */
+textarea.custom-input {
+    height: auto;
+    padding: 15px 18px;
+    border-radius: 20px;
+    resize: none;
+}
+
+
+/* Select Dropdown */
+select.custom-input {
+    cursor: pointer;
+}
+
+
+/* Focus Effect */
+.custom-input:focus {
+
+    border-color: #0d6efd;
+
+    box-shadow:
+        0 0 0 4px rgba(13,110,253,0.15);
+
+}
+
+
+/* Placeholder */
+.custom-input::placeholder {
+    color: #999;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.form-step {
+    display:none;
+}
+
+
+.form-step.active {
+    display:block;
+}
+
+
+
+.next-btn,
+.back-btn,
+.quote-btn {
+
+    border:none;
+    padding:12px 30px;
+    border-radius:30px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:20px;
+
+}
+
+
+
+.next-btn {
+
+    background:#0d6efd;
+    color:white;
+
+}
+
+
+
+.back-btn {
+
+    background:#ddd;
+
+}
+
+
+
+.quote-btn {
+
+    background:#198754;
+    color:white;
+
+}
+
+
+
+
+
+
+
+.form-progress {
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:35px;
+
+}
+
+
+.progress-step {
+
+    text-align:center;
+
+    color:#999;
+
+}
+
+
+.progress-step span {
+
+
+    display:flex;
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:#ddd;
+
+    align-items:center;
+    justify-content:center;
+
+    font-weight:700;
+
+    margin:auto;
+
+}
+
+
+
+.progress-step p {
+
+    margin-top:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+
+.progress-step.active span {
+
+    background:#0d6efd;
+
+    color:white;
+
+}
+
+
+
+.progress-step.active p {
+
+    color:#0d6efd;
+
+}
+
+
+
+.progress-line {
+
+    width:70px;
+
+    height:3px;
+
+    background:#ddd;
+
+    margin:0 10px;
+
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.input-error {
+
+    border:2px solid red !important;
+
+}
+/* Mobile Adjustments */
+@media(max-width:768px){
+
+    .quote-form{
+        padding:20px;
+    }
+
+
+    .form-title{
+        font-size:20px;
+    }
+
+}
+@media(max-width:992px){
+
+    .shipping-card{
+
+        height:auto;
+
+    }
+
+
+    .map-card{
+
+        height:450px;
+
+    }
+
+
+    #map{
+
+        height:380px;
+
+    }
+
+}

@@ -1,0 +1,311 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    {% include './reuseables/header.html' %}
+<body>
+    {% include './reuseables/navigation.html' %}
+<main class="main">
+        <!-- Hero Section -->
+        <section id="hero" class="hero section dark-background">
+
+            <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
+      
+            <div class="container">
+                <div class="container py-5">
+
+                    <div class="row">
+                
+                        <!-- Shipping Summary -->
+                        <div class="col-lg-4 mb-4">
+                
+                            <div class="card shadow-sm">
+                
+                                <div class="card-header">
+                                    <h4>Shipping Summary</h4>
+                                </div>
+                
+                                <div class="card-body">
+                
+                                    <p><strong>Pickup:</strong><br>{{ quote.pickup_city }}</p>
+                
+                                    <p><strong>Delivery:</strong><br>{{ quote.delivery_city }}</p>
+                
+                                    <p><strong>Vehicle:</strong><br>{{ quote.vehicle_type }}</p>
+                
+                                    <p><strong>Pickup Date:</strong><br>{{ quote.pickup_date }}</p>
+                
+                                    <p><strong>Distance:</strong><br>{{ quote.distance }} Miles</p>
+                
+                                </div>
+                
+                            </div>
+                
+                        </div>
+                
+                        <!-- Customer Form -->
+                        <div class="col-lg-8">
+                
+                            <div class="card shadow">
+                
+                                <div class="card-header text-center">
+                                    <h4 class="mb-0">
+                                        Complete Your Quote
+                                    </h4>
+                                </div>
+                
+                                <div class="card-body">
+                
+                                    <form method="POST" id="quoteForm">
+                
+                                        {% csrf_token %}
+                                        <div class="form-progress">
+
+                                            <div class="progress-step active">
+                                                <span>1</span>
+                                                <p>Customer</p>
+                                            </div>
+                                        
+                                        
+                                            <div class="progress-line"></div>
+                                        
+                                        
+                                            <div class="progress-step">
+                                                <span>2</span>
+                                                <p>Vehicle</p>
+                                            </div>
+                                        
+                                        
+                                            <div class="progress-line"></div>
+                                        
+                                        
+                                            <div class="progress-step">
+                                                <span>3</span>
+                                                <p>Shipping</p>
+                                            </div>
+                                        
+                                        
+                                            <div class="progress-line"></div>
+                                        
+                                        
+                                            <div class="progress-step">
+                                                <span>4</span>
+                                                <p>Location</p>
+                                            </div>
+                                        
+                                        </div>
+
+
+                                            <!-- STEP 1 CUSTOMER INFO -->
+                                            <div class="form-step active">
+                                            
+                                            <h3 class="form-title">
+                                                Customer Information
+                                            </h3>
+                                            
+                                            
+                                            <label>First Name</label>
+                                            {{ form.first_name }}
+                                            
+                                            
+                                            <label>Last Name</label>
+                                            {{ form.last_name }}
+                                            
+                                            
+                                            <label>Email</label>
+                                            {{ form.email }}
+                                            
+                                            
+                                            <label>Phone</label>
+                                            {{ form.phone }}
+                                            
+                                            
+                                            <button type="button" class="next-btn">
+                                                Next
+                                            </button>
+                                            
+                                            </div>
+                                            
+                                            
+                                            
+                                            <!-- STEP 2 VEHICLE INFO -->
+                                            <div class="form-step">
+                                            
+                                            <h3 class="form-title">
+                                                Vehicle Information
+                                            </h3>
+                                            
+                                            
+                                            <label>Vehicle Year</label>
+                                            {{form.vehicle_year}}
+                                            
+                                            
+                                            <label>Vehicle Make</label>
+                                            {{form.vehicle_make}}
+                                            
+                                            
+                                            <label>Vehicle Model</label>
+                                            {{form.vehicle_model}}
+                                            
+                                            
+                                            <button type="button" class="back-btn">
+                                                Back
+                                            </button>
+                                            
+                                            <button type="button" class="next-btn">
+                                                Next
+                                            </button>
+                                            
+                                            
+                                            </div>
+                                            
+                                            
+                                            
+                                            
+                                            <!-- STEP 3 SHIPPING INFO -->
+                                            <div class="form-step">
+                                            
+                                            <h3 class="form-title">
+                                                Shipping Information
+                                            </h3>
+                                            
+                                            
+                                            <label>Transport Type</label>
+                                            
+                                            {{form.transport_type}}
+                                            
+                                            
+                                            
+                                            <label>Vehicle Condition</label>
+                                            
+                                            {{form.vehicle_condition}}
+                                            
+                                            
+                                            
+                                            <button type="button" class="back-btn">
+                                            Back
+                                            </button>
+                                            
+                                            
+                                            <button type="button" class="next-btn">
+                                            Next
+                                            </button>
+                                            
+                                            
+                                            </div>
+                                            
+                                            
+                                            
+                                            
+                                            <!-- STEP 4 ADDITIONAL -->
+                                            <div class="form-step">
+                                            
+                                            <h3 class="form-title">
+                                            Additional Information
+                                            </h3>
+                                            
+                                            
+                                            <label>
+                                            Pickup Address
+                                            </label>
+                                            
+                                            {{form.pickup_address}}
+                                            
+                                            
+                                            
+                                            <label>
+                                            Delivery Address
+                                            </label>
+                                            
+                                            {{form.delivery_address}}
+                                            
+                                            
+                                            
+                                            <label>
+                                            Notes
+                                            </label>
+                                            
+                                            <textarea class="custom-input" name="notes"></textarea>
+                                            
+                                            
+                                            
+                                            <button type="button" class="back-btn">
+                                            Back
+                                            </button>
+                                            <input 
+                                                type="hidden"
+                                                name="pickup_lat"
+                                                id="pickup_lat">
+
+
+                                            <input 
+                                            type="hidden"
+                                            name="pickup_lng"
+                                            id="pickup_lng">
+
+
+                                            <input 
+                                            type="hidden"
+                                            name="delivery_lat"
+                                            id="delivery_lat">
+
+
+                                            <input 
+                                            type="hidden"
+                                            name="delivery_lng"
+                                            id="delivery_lng">
+
+
+                                            <input 
+                                            type="hidden"
+                                            name="distance"
+                                            id="distance">
+                                            
+                                            
+                                            <button type="submit" class="quote-btn">
+                                            Generate My Quote
+                                            </button>
+                                            
+                                            
+                                            </div>
+                                            {{ form.pickup_lat }}
+                                            {{ form.pickup_lng }}
+
+                                            {{ form.delivery_lat }}
+                                            {{ form.delivery_lng }}
+
+                                            {{ form.distance }}
+                                            
+                                            
+                
+                                        <!-- We will add inputs here in the next step -->
+            
+                                    </form>
+                
+                                </div>
+                
+                            </div>
+                
+                        </div>
+                
+                    </div>
+                
+                </div>
+                
+      
+            </div>
+      
+        </section>
+        <!-- /Hero Section -->
+
+            <!-- Features Section -->
+
+                    <div id="map"></div>
+            
+            
+          
+      
+</main>
+</body>
+{% include './reuseables/footer.html' %}
+</html>
