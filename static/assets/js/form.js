@@ -21,25 +21,25 @@ L.tileLayer(
 
 // Show Custom Date
 
-const pickup =
-document.getElementById("pickupOption");
+// const pickup =
+// document.getElementById("pickupOption");
 
-const custom =
-document.getElementById("customDateDiv");
+// const custom =
+// document.getElementById("customDateDiv");
 
-pickup.addEventListener("change",()=>{
+// pickup.addEventListener("change",()=>{
 
-    if(pickup.value==="Custom Date"){
+//     if(pickup.value==="Custom Date"){
 
-        custom.classList.remove("d-none");
+//         custom.classList.remove("d-none");
 
-    }else{
+//     }else{
 
-        custom.classList.add("d-none");
+//         custom.classList.add("d-none");
 
-    }
+//     }
 
-});
+// });
 
 
 let cities = [];
@@ -195,3 +195,31 @@ function calculateDistance() {
 
     document.getElementById("distance_value").value = distance;
 }
+
+
+const pickupOption = document.getElementById("pickupOption");
+const customDateContainer = document.getElementById("customDateContainer");
+const customDate = document.getElementById("customDate");
+
+pickupOption.addEventListener("change", function () {
+
+    if (this.value === "Custom Date") {
+
+        customDateContainer.style.display = "block";
+        customDate.required = true;
+
+    } else {
+
+        customDateContainer.style.display = "none";
+        customDate.required = false;
+        customDate.value = "";
+
+    }
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    
+
+});

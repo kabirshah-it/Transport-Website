@@ -125,6 +125,10 @@ class Quote(models.Model):
         null=True,
         blank=True
     )
+    
+    quote_price = models.FloatField(
+    null=True,
+    blank=True)
 
 
     # =========================
@@ -143,6 +147,8 @@ class Quote(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
+
+
 
 
     def __str__(self):

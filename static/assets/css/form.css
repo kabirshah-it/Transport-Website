@@ -8,9 +8,9 @@ body{
 
     border-radius:20px;
 
-    padding:35px;
+    padding:20px 20px;
 
-    height:650px;
+    /* height:650px; */
 
     box-shadow:0 10px 25px rgba(0,0,0,.08);
 }
@@ -30,7 +30,7 @@ body{
 
     overflow:hidden;
 
-    height:650px;
+    /* height:650px; */
 
     box-shadow:0 10px 25px rgba(0,0,0,.08);
 }

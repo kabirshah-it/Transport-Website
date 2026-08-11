@@ -3,6 +3,198 @@
 <html lang="en">
 
 {% include './reuseables/header.html' %}
+<style>
+  /* =========================================
+   CONTINUE BUTTON
+   ========================================= */
+
+.quote-continue-btn {
+    width: 100%;
+
+    margin-top: 18px;
+    padding: 13px 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #1769d1;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+.quote-continue-btn span {
+    margin-left: 8px;
+
+    font-size: 18px;
+}
+.distance-box{
+  background: #1769d1;
+}
+
+.quote-continue-btn:hover {
+    background: #0e56b2;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(23,105,209,0.25);
+}
+
+.vehicle-selector {
+    position: relative;
+    width: 100%;
+}
+
+
+/* SELECTED FIELD */
+
+.vehicle-selected {
+    width: 100%;
+    min-height: 52px;
+
+    padding: 10px 15px;
+
+    border: 1px solid #dce2e9;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.vehicle-selected:hover {
+    border-color: #1769d1;
+}
+
+.vehicle-selected-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: #273449;
+}
+
+.vehicle-selected-left i {
+    color: #1769d1;
+    font-size: 21px;
+}
+
+.vehicle-selected-left span {
+    font-size: 14px;
+}
+
+.vehicle-arrow {
+    color: #7c8795;
+    font-size: 13px;
+}
+
+
+/* DROPDOWN */
+
+.vehicle-dropdown {
+    position: absolute;
+
+    top: calc(100% + 7px);
+    left: 0;
+    right: 0;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e6ed;
+
+    border-radius: 12px;
+
+    padding: 7px;
+
+    box-shadow: 0 15px 35px rgba(20, 45, 80, 0.15);
+
+    z-index: 1000;
+
+    display: none;
+}
+
+
+/* OPEN */
+
+.vehicle-selector.open .vehicle-dropdown {
+    display: block;
+}
+
+
+/* OPTIONS */
+
+.vehicle-option {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 12px 13px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: all 0.15s ease;
+}
+
+.vehicle-option i {
+    width: 28px;
+
+    color: #1769d1;
+
+    font-size: 21px;
+
+    text-align: center;
+}
+
+.vehicle-option span {
+    color: #273449;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+.vehicle-option:hover {
+    background: #eef6ff;
+}
+
+.vehicle-option:hover span {
+    color: #1769d1;
+}
+
+
+/* HIDE REAL SELECT */
+
+.vehicle-hidden-select {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+</style>
 <body class="index-page">
 {% include './reuseables/navigation.html' %}
 
@@ -31,7 +223,8 @@
                           <div class="distance-box">
       
                               <h3 id="distance">
-                                  Distance: 0 Miles
+                                <i class="bi bi-signpost-2-fill info-box-icon">  Distance: 0 Miles</i>
+                                  
                               </h3>
       
                           </div>
@@ -48,9 +241,9 @@
                     <div class="col-lg-6">
         
                       <div class="shipping-card">
-                          <h2 class="mb-4" style="color:black ;">
+                          <h3 class="mb-4" style="color:black ; font-weight: 700;">
                               Get Shipping Quote
-                          </h2>
+                          </h3>
         
         
                             <!-- FROM -->
@@ -59,7 +252,10 @@
 
         
                                 <label class="form-label" style="color:black ;">
-                                    Pickup City
+                                    <div class="quote-icon">
+                                      <i class="bi bi-geo-alt-fill"> Pickup City</i>
+                                  </div>
+                              
                                 </label>
         
                                 <select id="fromCity" placeholder="From (City, State)" name="pickup_city">
@@ -72,9 +268,12 @@
         
                             <div class="mb-3">
         
-                                <label class="form-label" style="color:black ;">
-                                    Delivery City
-                                </label>
+                              <label class="form-label" style="color:black ;">
+                                <div class="quote-icon">
+                                  <i class="bi bi-geo-alt-fill"> Dilevry City</i>
+                              </div>
+                          
+                            </label>
         
                                 <select id="toCity" placeholder="To (City, State)" name="delivery_city">
                                   <option></option>
@@ -86,28 +285,87 @@
         
                             <div class="mb-3">
         
-                                <label class="form-label" style="color:black ;">
-                                    Vehicle Type
-                                </label>
+                              <div class="mb-3">
         
-                                <select
-        class="form-select rounded-pill"
-        name="vehicle_type"
-        required>
+                                <label class="form-label" style="color:black ;">
+                                  <div class="quote-icon">
+                                    <i class="bi bi-car-front-fill info-box-icon"> Vahicale Type </i>
+                                </div>
+                            
+                              </label>
+        
+                                <!-- New Select  -->
+                                <div class="vehicle-selector">
 
-        <option value="" selected disabled>
-            Select Vehicle
-        </option>
+                                  <div class="vehicle-selected" id="vehicleSelected">
+                                      <div class="vehicle-selected-left">
+                                          <i class="bi bi-car-front-fill" id="selectedVehicleIcon"></i>
+                              
+                                          <span id="selectedVehicleText">
+                                              Select vehicle type
+                                          </span>
+                                      </div>
+                              
+                                      <i class="bi bi-chevron-down vehicle-arrow"></i>
+                                  </div>
+                              
+                              
+                                  <div class="vehicle-dropdown" id="vehicleDropdown">
+                              
+                                      <div class="vehicle-option" data-value="sedan">
+                                          <i class="bi bi-car-front-fill"></i>
+                                          <span>Sedan</span>
+                                      </div>
+                              
+                                      <div class="vehicle-option" data-value="suv">
+                                          <i class="bi bi-car-front"></i>
+                                          <span>SUV</span>
+                                      </div>
+                              
+                                      <div class="vehicle-option" data-value="pickup">
+                                          <i class="bi bi-truck-front-fill"></i>
+                                          <span>Pickup Truck</span>
+                                      </div>
+                              
+                                      <div class="vehicle-option" data-value="van">
+                                          <i class="bi bi-truck-front"></i>
+                                          <span>Van</span>
+                                      </div>
+                              
+                                      <div class="vehicle-option" data-value="motorcycle">
+                                          <i class="bi bi-bicycle"></i>
+                                          <span>Motorcycle</span>
+                                      </div>
+                              
+                                  </div>
+                              
+                                  <!-- Keep this hidden field for Django -->
+                                  <select
+                                      name="vehicle_type"
+                                      id="vehicle_type"
+                                      class="vehicle-hidden-select"
+                                  >
+                              
+                                      <option value="">Select vehicle type</option>
+                              
+                                      <option value="sedan">Sedan</option>
+                              
+                                      <option value="suv">SUV</option>
+                              
+                                      <option value="pickup">Pickup Truck</option>
+                              
+                                      <option value="van">Van</option>
+                              
+                                      <option value="motorcycle">Motorcycle</option>
+                              
+                                  </select>
+                              
+                              </div>
 
-        <option value="Sedan">Sedan</option>
-        <option value="SUV">SUV</option>
-        <option value="Pickup Truck">Pickup Truck</option>
-        <option value="Van">Van</option>
-        <option value="Motorcycle">Motorcycle</option>
-        <option value="Luxury">Luxury</option>
-        <option value="Electric Vehicle">Electric Vehicle</option>
 
-    </select>
+
+
+                                <!-- New Select End  -->
         
                             </div>
         
@@ -115,43 +373,27 @@
         
                             <div class="mb-3">
         
-                                <label class="form-label" style="color:black ;">
-                                    Pickup Date
-                                </label>
+                              <label class="form-label" style="color:black ;">
+                                <div class="quote-icon">
+                                  <i class="bi bi-calendar3 info-box-icon"> Pickup Date </i>
+                              </div>
+                          
+                            </label>
         
-                                <select
-        id="pickupOption"
-        class="form-select rounded-pill"
-        name="pickup_date"
-        required>
+                                <input
+                                  type="date"
+                                  id="pickupDate"
+                                  name="pickup_date"
+                                  class="form-control rounded-pill"
+                                  required
+                              >
 
-        <option value="As Soon As Possible">
-            As Soon As Possible
-        </option>
 
-        <option value="Within 7 Days">
-            Within 7 Days
-        </option>
-
-        <option value="Custom Date">
-            Custom Date
-        </option>
-
-    </select>
         
                             </div>
         
-                            <div id="customDateDiv" class="mb-4 d-none">
-
-                              <input
-                                  type="date"
-                                  id="customDate"
-                                  name="custom_date"
-                                  class="form-control rounded-pill">
-                          
-                          </div>
-        
-                            <button class="btn btn-primary w-100 rounded-pill py-3" type="submit">
+                           
+                            <button class="quote-continue-btn" type="submit">
         
                                 Get Shipping Quote
         
@@ -706,6 +948,90 @@
   
 </body>
 <!-- JavaScript -->
+<script>
+  const vehicleSelector =
+    document.querySelector(".vehicle-selector");
+
+const vehicleSelected =
+    document.querySelector("#vehicleSelected");
+
+const vehicleDropdown =
+    document.querySelector("#vehicleDropdown");
+
+const vehicleSelect =
+    document.querySelector("#vehicle_type");
+
+const selectedVehicleText =
+    document.querySelector("#selectedVehicleText");
+
+const selectedVehicleIcon =
+    document.querySelector("#selectedVehicleIcon");
+
+
+// Open / close dropdown
+
+vehicleSelected.addEventListener("click", function () {
+
+    vehicleSelector.classList.toggle("open");
+
+});
+
+
+// Select vehicle
+
+document.querySelectorAll(".vehicle-option").forEach(option => {
+
+    option.addEventListener("click", function () {
+
+        const value = this.dataset.value;
+
+        const text =
+            this.querySelector("span").textContent;
+
+        const icon =
+            this.querySelector("i").className;
+
+
+        // Update visible selector
+
+        selectedVehicleText.textContent = text;
+
+        selectedVehicleIcon.className = icon;
+
+
+        // Update REAL Django select
+
+        vehicleSelect.value = value;
+
+
+        // Trigger change event
+
+        vehicleSelect.dispatchEvent(
+            new Event("change", { bubbles: true })
+        );
+
+
+        // Close dropdown
+
+        vehicleSelector.classList.remove("open");
+
+    });
+
+});
+
+
+// Close when clicking outside
+
+document.addEventListener("click", function(event) {
+
+    if (!vehicleSelector.contains(event.target)) {
+
+        vehicleSelector.classList.remove("open");
+
+    }
+
+});
+</script>
 {% include './reuseables/footer.html' %}
 
 </html>

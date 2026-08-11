@@ -3,6 +3,443 @@
 <!DOCTYPE html>
 <html lang="en">
     {% include './reuseables/header.html' %}
+    <style>
+/* =========================================
+   QUOTE SECTION
+   ========================================= */
+
+.quote-section {
+    width: 100%;
+    padding: 10px 20px;
+    background: #f4f7fb;
+}
+
+
+/* MAIN CARD */
+
+.quote-card {
+    width: 100%;
+    max-width: 950px;
+    min-height: 480px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+
+    box-shadow: 0 15px 40px rgba(15, 50, 90, 0.10);
+}
+
+
+/* =========================================
+   LEFT IMAGE
+   ========================================= */
+
+.quote-visual {
+    position: relative;
+    min-height: 480px;
+
+    background-image:
+        linear-gradient(
+            rgba(8, 55, 105, 0.72),
+            rgba(8, 55, 105, 0.72)
+        ),
+        url("{% static 'assets/img/carShipping.jpg' %}");
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+.quote-overlay {
+    position: absolute;
+    left: 35px;
+    right: 35px;
+    bottom: 35px;
+
+    color: #ffffff;
+}
+
+
+.quote-badge {
+    display: inline-block;
+
+    padding: 8px 15px;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.3);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 20px;
+}
+
+
+.quote-overlay h1 {
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+
+
+.quote-overlay p {
+    max-width: 410px;
+
+    margin: 0;
+
+    color: rgba(255,255,255,0.88);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   RIGHT QUOTE
+   ========================================= */
+
+.quote-details {
+    padding: 35px 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* Heading */
+
+.quote-heading span {
+    color: #1769d1;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+
+.quote-heading h2 {
+    margin: 7px 0 25px;
+
+    font-size: 25px;
+    margin-bottom: 18px;
+
+    font-weight: 700;
+
+    color: #172033;
+}
+
+
+/* =========================================
+   PRICE
+   ========================================= */
+
+.quote-price {
+    padding: 17px 20px;
+    margin-bottom: 18px;
+
+    border-radius: 15px;
+
+    background: #f1f7ff;
+
+    border: 1px solid #dcecff;
+}
+
+
+.quote-price small {
+    display: block;
+
+    color: #7d8999;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+}
+
+
+.quote-price div {
+    color: #1769d1;
+
+    font-size: 38px;
+
+    line-height: 1;
+
+    font-weight: 800;
+}
+
+
+.quote-price div span {
+    font-size: 30px;
+
+    vertical-align: top;
+
+    margin-right: 2px;
+}
+
+
+/* =========================================
+   ROUTE
+   ========================================= */
+
+.quote-route {
+    position: relative;
+
+    margin-bottom: 20px;
+}
+
+
+.quote-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 7px 0;
+}
+
+
+.quote-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #eef6ff;
+
+    color: #1769d1;
+
+    font-weight: 700;
+}
+
+
+.quote-info small {
+    display: block;
+
+    color: #8b96a6;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 3px;
+}
+
+
+.quote-info strong {
+    display: block;
+
+    color: #273449;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* line between cities */
+
+.route-line {
+    position: absolute;
+
+    left: 19px;
+
+    top: 48px;
+
+    width: 2px;
+
+    height: 23px;
+
+    background: #cbdff5;
+}
+
+
+/* =========================================
+   INFORMATION BOXES
+   ========================================= */
+
+.quote-info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-top: 5px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid #e8edf3;
+}
+
+
+.quote-info-box {
+    padding: 9px;
+
+    border-radius: 10px;
+
+    background: #fafbfd;
+}
+
+
+.quote-info-box small {
+    display: block;
+
+    color: #929cab;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+
+.quote-info-box strong {
+    display: block;
+
+    color: #273449;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   CONTINUE BUTTON
+   ========================================= */
+
+.quote-continue-btn {
+    width: 100%;
+
+    margin-top: 18px;
+    padding: 13px 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #1769d1;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+.quote-continue-btn span {
+    margin-left: 8px;
+
+    font-size: 18px;
+}
+
+
+.quote-continue-btn:hover {
+    background: #0e56b2;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(23,105,209,0.25);
+}
+
+
+/* =========================================
+   SECURE TEXT
+   ========================================= */
+
+.quote-secure {
+    text-align: center;
+
+    margin: 12px 0 0;
+
+    color: #9ba5b4;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .quote-card {
+        grid-template-columns: 1fr;
+    }
+
+    .quote-visual {
+        min-height: 400px;
+    }
+
+    .quote-details {
+        padding: 40px 35px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .quote-section {
+        padding: 20px 10px;
+    }
+
+    .quote-visual {
+        min-height: 350px;
+    }
+
+    .quote-overlay {
+        left: 30px;
+        right: 30px;
+        bottom: 30px;
+    }
+
+    .quote-overlay h1 {
+        font-size: 32px;
+    }
+
+    .quote-details {
+        padding: 30px 22px;
+    }
+
+    .quote-price div {
+        font-size: 40px;
+    }
+
+    .quote-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+    </style>
 <body>
     {% include './reuseables/navigation.html' %}
 <main class="main">
@@ -12,300 +449,529 @@
             <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
       
             <div class="container">
-                <div class="container py-5">
+                <div id="quotePreview">
 
-                    <div class="row">
-                
-                        <!-- Shipping Summary -->
-                        <div class="col-lg-4 mb-4">
-                
-                            <div class="card shadow-sm">
-                
-                                <div class="card-header">
-                                    <h4>Shipping Summary</h4>
-                                </div>
-                
-                                <div class="card-body">
-                
-                                    <p><strong>Pickup:</strong><br>{{ quote.pickup_city }}</p>
-                
-                                    <p><strong>Delivery:</strong><br>{{ quote.delivery_city }}</p>
-                
-                                    <p><strong>Vehicle:</strong><br>{{ quote.vehicle_type }}</p>
-                
-                                    <p><strong>Pickup Date:</strong><br>{{ quote.pickup_date }}</p>
-                
-                                    <p><strong>Distance:</strong><br>{{ quote.distance }} Miles</p>
-                
-                                </div>
-                
-                            </div>
-                
-                        </div>
-                
-                        <!-- Customer Form -->
-                        <div class="col-lg-8">
-                
-                            <div class="card shadow">
-                
-                                <div class="card-header text-center">
-                                    <h4 class="mb-0">
-                                        Complete Your Quote
-                                    </h4>
-                                </div>
-                
-                                <div class="card-body">
-                
-                                    <form method="POST" id="quoteForm">
-                
-                                        {% csrf_token %}
-                                        <div class="form-progress">
+                    
+<!-- ==============================
+     QUOTE SECTION ONLY
+     ============================== -->
 
-                                            <div class="progress-step active">
-                                                <span>1</span>
-                                                <p>Customer</p>
-                                            </div>
-                                        
-                                        
-                                            <div class="progress-line"></div>
-                                        
-                                        
-                                            <div class="progress-step">
-                                                <span>2</span>
-                                                <p>Vehicle</p>
-                                            </div>
-                                        
-                                        
-                                            <div class="progress-line"></div>
-                                        
-                                        
-                                            <div class="progress-step">
-                                                <span>3</span>
-                                                <p>Shipping</p>
-                                            </div>
-                                        
-                                        
-                                            <div class="progress-line"></div>
-                                        
-                                        
-                                            <div class="progress-step">
-                                                <span>4</span>
-                                                <p>Location</p>
-                                            </div>
-                                        
-                                        </div>
+<section id="quote-section" class="quote-section">
+
+    <div class="quote-card">
+
+        <!-- LEFT: IMAGE -->
+        <div class="quote-visual">
+
+            <div class="quote-overlay">
+
+                <span class="quote-badge">
+                    VEHICLE SHIPPING
+                </span>
+
+                <h1>
+                    Your Car,<br>
+                    Our Responsibility.
+                </h1>
+
+                <p>
+                    A reliable and professional way to
+                    transport your vehicle safely to its
+                    destination.
+                </p>
+
+            </div>
+
+        </div>
 
 
-                                            <!-- STEP 1 CUSTOMER INFO -->
-                                            <div class="form-step active">
-                                            
-                                            <h3 class="form-title">
-                                                Customer Information
-                                            </h3>
-                                            
-                                            
-                                            <label>First Name</label>
-                                            {{ form.first_name }}
-                                            
-                                            
-                                            <label>Last Name</label>
-                                            {{ form.last_name }}
-                                            
-                                            
-                                            <label>Email</label>
-                                            {{ form.email }}
-                                            
-                                            
-                                            <label>Phone</label>
-                                            {{ form.phone }}
-                                            
-                                            
-                                            <button type="button" class="next-btn">
-                                                Next
-                                            </button>
-                                            
-                                            </div>
-                                            
-                                            
-                                            
-                                            <!-- STEP 2 VEHICLE INFO -->
-                                            <div class="form-step">
-                                            
-                                            <h3 class="form-title">
-                                                Vehicle Information
-                                            </h3>
-                                            
-                                            
-                                            <label>Vehicle Year</label>
-                                            {{form.vehicle_year}}
-                                            
-                                            
-                                            <label>Vehicle Make</label>
-                                            {{form.vehicle_make}}
-                                            
-                                            
-                                            <label>Vehicle Model</label>
-                                            {{form.vehicle_model}}
-                                            
-                                            
-                                            <button type="button" class="back-btn">
-                                                Back
-                                            </button>
-                                            
-                                            <button type="button" class="next-btn">
-                                                Next
-                                            </button>
-                                            
-                                            
-                                            </div>
-                                            
-                                            
-                                            
-                                            
-                                            <!-- STEP 3 SHIPPING INFO -->
-                                            <div class="form-step">
-                                            
-                                            <h3 class="form-title">
-                                                Shipping Information
-                                            </h3>
-                                            
-                                            
-                                            <label>Transport Type</label>
-                                            
-                                            {{form.transport_type}}
-                                            
-                                            
-                                            
-                                            <label>Vehicle Condition</label>
-                                            
-                                            {{form.vehicle_condition}}
-                                            
-                                            
-                                            
-                                            <button type="button" class="back-btn">
-                                            Back
-                                            </button>
-                                            
-                                            
-                                            <button type="button" class="next-btn">
-                                            Next
-                                            </button>
-                                            
-                                            
-                                            </div>
-                                            
-                                            
-                                            
-                                            
-                                            <!-- STEP 4 ADDITIONAL -->
-                                            <div class="form-step">
-                                            
-                                            <h3 class="form-title">
-                                            Additional Information
-                                            </h3>
-                                            
-                                            
-                                            <label>
-                                            Pickup Address
-                                            </label>
-                                            
-                                            {{form.pickup_address}}
-                                            
-                                            
-                                            
-                                            <label>
-                                            Delivery Address
-                                            </label>
-                                            
-                                            {{form.delivery_address}}
-                                            
-                                            
-                                            
-                                            <label>
-                                            Notes
-                                            </label>
-                                            
-                                            <textarea class="custom-input" name="notes"></textarea>
-                                            
-                                            
-                                            
-                                            <button type="button" class="back-btn">
-                                            Back
-                                            </button>
-                                            <input 
-                                                type="hidden"
-                                                name="pickup_lat"
-                                                id="pickup_lat">
+        <!-- RIGHT: QUOTE -->
+        <div class="quote-details">
+
+            <div class="quote-heading">
+
+                <span>YOUR ESTIMATED QUOTE</span>
+
+                <h2>
+                    Your Shipping Cost
+                </h2>
+
+            </div>
 
 
-                                            <input 
-                                            type="hidden"
-                                            name="pickup_lng"
-                                            id="pickup_lng">
+            <!-- PRICE -->
+            <div class="quote-price">
+
+                <small>
+                    Estimated Price
+                </small>
+
+                <div>
+                    <span>$</span>{{ quote.quote_price }}
+                </div>
+
+            </div>
 
 
-                                            <input 
-                                            type="hidden"
-                                            name="delivery_lat"
-                                            id="delivery_lat">
+            <!-- ROUTE -->
+            <div class="quote-route">
 
+                <div class="quote-info">
 
-                                            <input 
-                                            type="hidden"
-                                            name="delivery_lng"
-                                            id="delivery_lng">
-
-
-                                            <input 
-                                            type="hidden"
-                                            name="distance"
-                                            id="distance">
-                                            
-                                            
-                                            <button type="submit" class="quote-btn">
-                                            Generate My Quote
-                                            </button>
-                                            
-                                            
-                                            </div>
-                                            {{ form.pickup_lat }}
-                                            {{ form.pickup_lng }}
-
-                                            {{ form.delivery_lat }}
-                                            {{ form.delivery_lng }}
-
-                                            {{ form.distance }}
-                                            
-                                            
-                
-                                        <!-- We will add inputs here in the next step -->
-            
-                                    </form>
-                
-                                </div>
-                
-                            </div>
-                
-                        </div>
-                
+                    <div class="quote-icon">
+                        ↗
                     </div>
+
+                    <div>
+                        <small>Pickup</small>
+
+                        <strong>
+                            {{  quote.pickup_city }}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="route-line"></div>
+
+
+                <div class="quote-info">
+
+                    <div class="quote-icon">
+                        ↘
+                    </div>
+
+                    <div>
+                        <small>Delivery</small>
+
+                        <strong>
+                            {{ quote.delivery_city }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- OTHER INFORMATION -->
+            <div class="quote-info-grid">
+
+                <div class="quote-info-box">
+
+                    <small>Vehicle</small>
+
+                    <strong>
+                        <i id="quoteVehicleIcon" class="bi bi-car-front-fill info-box-icon"> {{ quote.vehicle_type }} </i>
+                    </strong>
+
+
+                </div>
+
+
+                <div class="quote-info-box">
+
+                    <small>Distance</small>
+
+                    <strong>
+                        <i class="bi bi-signpost-2-fill info-box-icon">  {{ quote.distance|floatformat:"0" }} miles</i>
+                    </strong>
+
+                </div>
+
+
+                <div class="quote-info-box">
+
+                    <small>Pickup Date</small>
+
+                    <strong>
+                        <i class="bi bi-calendar3 info-box-icon"> {{ quote.pickup_date }} </i>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTINUE -->
+            <button
+                type="button"
+                id="continueButton"
+                class="quote-continue-btn"
+            >
+                Continue
+                <span>→</span>
+            </button>
+
+
+        </div>
+
+    </div>
+
+</section>
+
                 
                 </div>
+                <div id="multiStepForm" style="display: none;">
+                    <div class="container py-5">
+
+                        <div class="row">
+                    
+                            <!-- Shipping Summary -->
+                            <div class="col-lg-4 mb-4">
+                    
+                                <div class="card shadow-sm">
+                    
+                                    <div class="card-header">
+                                        <h4>Shipping Summary</h4>
+                                    </div>
+                    
+                                    <div class="card-body">
+                    
+                                        <p><strong>Pickup:</strong><br>{{ quote.pickup_city }}</p>
+                    
+                                        <p><strong>Delivery:</strong><br>{{ quote.delivery_city }}</p>
+                    
+                                        <p><strong>Vehicle:</strong><br>{{ quote.vehicle_type }}</p>
+                    
+                                        <p><strong>Pickup Date:</strong><br>{{ quote.pickup_date }}</p>
+                    
+                                        <p><strong>Distance:</strong><br>{{ quote.distance }} Miles</p>
+                                        <p>Price:- {{ quote.quote_price }}</p>
+                    
+                                    </div>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                            <!-- Customer Form -->
+                            <div class="col-lg-8">
+                    
+                                <div class="card shadow">
+                    
+                                    <div class="card-header text-center">
+                                        <h4 class="mb-0">
+                                            Complete Your Quote
+                                        </h4>
+                                    </div>
+                    
+                                    <div class="card-body">
+                    
+                                        <form method="POST" id="quoteForm">
+                    
+                                            {% csrf_token %}
+                                            <div class="form-progress">
+
+                                                <div class="progress-step active">
+                                                    <span>1</span>
+                                                    <p>Customer</p>
+                                                </div>
+                                            
+                                            
+                                                <div class="progress-line"></div>
+                                            
+                                            
+                                                <div class="progress-step">
+                                                    <span>2</span>
+                                                    <p>Vehicle</p>
+                                                </div>
+                                            
+                                            
+                                                <div class="progress-line"></div>
+                                            
+                                            
+                                                <div class="progress-step">
+                                                    <span>3</span>
+                                                    <p>Shipping</p>
+                                                </div>
+                                            
+                                            
+                                                <div class="progress-line"></div>
+                                            
+                                            
+                                                <div class="progress-step">
+                                                    <span>4</span>
+                                                    <p>Location</p>
+                                                </div>
+                                            
+                                            </div>
+
+
+                                                <!-- STEP 1 CUSTOMER INFO -->
+                                                <div class="form-step active">
+                                                
+                                                <h3 class="form-title">
+                                                    Customer Information
+                                                </h3>
+                                                
+                                                
+                                                <label>First Name</label>
+                                                {{ form.first_name }}
+                                                
+                                                
+                                                <label>Last Name</label>
+                                                {{ form.last_name }}
+                                                
+                                                
+                                                <label>Email</label>
+                                                {{ form.email }}
+                                                
+                                                
+                                                <label>Phone</label>
+                                                {{ form.phone }}
+                                                
+                                                
+                                                <button type="button" class="next-btn">
+                                                    Next
+                                                </button>
+                                                
+                                                </div>
+                                                
+                                                
+                                                
+                                                <!-- STEP 2 VEHICLE INFO -->
+                                                <div class="form-step">
+                                                
+                                                <h3 class="form-title">
+                                                    Vehicle Information
+                                                </h3>
+                                                
+                                                
+                                                <label>Vehicle Year</label>
+                                                {{form.vehicle_year}}
+                                                
+                                                
+                                                <label>Vehicle Make</label>
+                                                {{form.vehicle_make}}
+                                                
+                                                
+                                                <label>Vehicle Model</label>
+                                                {{form.vehicle_model}}
+                                                
+                                                
+                                                <button type="button" class="back-btn">
+                                                    Back
+                                                </button>
+                                                
+                                                <button type="button" class="next-btn">
+                                                    Next
+                                                </button>
+                                                
+                                                
+                                                </div>
+                                                
+                                                
+                                                
+                                                
+                                                <!-- STEP 3 SHIPPING INFO -->
+                                                <div class="form-step">
+                                                
+                                                <h3 class="form-title">
+                                                    Shipping Information
+                                                </h3>
+                                                
+                                                
+                                                <label>Transport Type</label>
+                                                
+                                                {{form.transport_type}}
+                                                
+                                                
+                                                
+                                                <label>Vehicle Condition</label>
+                                                
+                                                {{form.vehicle_condition}}
+                                                
+                                                
+                                                
+                                                <button type="button" class="back-btn">
+                                                Back
+                                                </button>
+                                                
+                                                
+                                                <button type="button" class="next-btn">
+                                                Next
+                                                </button>
+                                                
+                                                
+                                                </div>
+                                                
+                                                
+                                                
+                                                
+                                                <!-- STEP 4 ADDITIONAL -->
+                                                <div class="form-step">
+                                                
+                                                <h3 class="form-title">
+                                                Additional Information
+                                                </h3>
+                                                
+                                                
+                                                <label>
+                                                Pickup Address
+                                                </label>
+                                                
+                                                {{form.pickup_address}}
+                                                
+                                                
+                                                
+                                                <label>
+                                                Delivery Address
+                                                </label>
+                                                
+                                                {{form.delivery_address}}
+                                                
+                                                
+                                                
+                                                <label>
+                                                Notes
+                                                </label>
+                                                
+                                                <textarea class="custom-input" name="notes"></textarea>
+                                                
+                                                
+                                                
+                                                <button type="button" class="back-btn">
+                                                Back
+                                                </button>
+                                                <input 
+                                                    type="hidden"
+                                                    name="pickup_lat"
+                                                    id="pickup_lat">
+
+
+                                                <input 
+                                                type="hidden"
+                                                name="pickup_lng"
+                                                id="pickup_lng">
+
+
+                                                <input 
+                                                type="hidden"
+                                                name="delivery_lat"
+                                                id="delivery_lat">
+
+
+                                                <input 
+                                                type="hidden"
+                                                name="delivery_lng"
+                                                id="delivery_lng">
+
+
+                                                <input 
+                                                type="hidden"
+                                                name="distance"
+                                                id="distance">
+                                                
+                                                
+                                                <button type="submit" class="quote-btn">
+                                                Generate My Quote
+                                                </button>
+                                                
+                                                
+                                                </div>
+                                                {{ form.pickup_lat }}
+                                                {{ form.pickup_lng }}
+
+                                                {{ form.delivery_lat }}
+                                                {{ form.delivery_lng }}
+
+                                                {{ form.distance }}
+                                                
+                                                
+                    
+                                            <!-- We will add inputs here in the next step -->
+                
+                                        </form>
+                    
+                                    </div>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                        </div>
+                    
+                    </div>
+                </div>  
                 
       
             </div>
       
         </section>
-        <!-- /Hero Section -->
-
-            <!-- Features Section -->
-
-                    <div id="map"></div>
-            
-            
           
       
 </main>
 </body>
+<script>
+    const continueButton = document.getElementById("continueButton");
+    const quotePreview = document.getElementById("quotePreview");
+    const multiStepForm = document.getElementById("multiStepForm");
+
+
+    if (continueButton && quotePreview && multiStepForm) {
+
+        continueButton.addEventListener("click", function () {
+
+            quotePreview.style.display = "none";
+            multiStepForm.style.display = "block";
+
+        });
+
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+
+const vehicleType = "{{ quote.vehicle_type|escapejs }}".toLowerCase();
+
+const vehicleIcon = document.getElementById("quoteVehicleIcon");
+
+if (!vehicleIcon) return;
+
+
+if (vehicleType === "sedan") {
+
+    vehicleIcon.className =
+        "bi bi-car-front-fill info-box-icon";
+
+}
+
+else if (vehicleType === "suv") {
+
+    vehicleIcon.className =
+        "bi bi-car-front info-box-icon";
+
+}
+
+else if (vehicleType === "pickup") {
+
+    vehicleIcon.className =
+        "bi bi-truck-front-fill info-box-icon";
+
+}
+
+else if (vehicleType === "van") {
+
+    vehicleIcon.className =
+        "bi bi-truck-front info-box-icon";
+
+}
+
+else if (vehicleType === "motorcycle") {
+
+    vehicleIcon.className =
+        "bi bi-bicycle info-box-icon";
+
+}
+
+else {
+
+    vehicleIcon.className =
+        "bi bi-car-front-fill info-box-icon";
+
+}
+
+});
+</script>
 {% include './reuseables/footer.html' %}
 </html>

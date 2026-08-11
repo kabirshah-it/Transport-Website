@@ -226,7 +226,7 @@ h6 {
   --heading-color: #ffffff;
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 20px 0;
+  padding: 0px 0;
   transition: all 0.5s;
   z-index: 997;
 }
@@ -245,6 +245,10 @@ h6 {
   margin: 0;
   font-weight: 700;
   color: var(--heading-color);
+}
+.py-5 {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
 }
 
 .header .btn-getstarted,
@@ -872,7 +876,7 @@ section,
   width: 100%;
   min-height: 50vh;
   position: relative;
-  padding: 120px 0 60px 0;
+  padding: 80px 0 60px 0;
 }
 
 .hero .hero-bg {
@@ -906,7 +910,7 @@ section,
 .hero p {
   font-size: 15px;
   font-weight: 400;
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
 }
 
 .hero form {
@@ -2028,3 +2032,29 @@ section,
   position: relative !important;
   overflow: hidden !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Details page Styel */
