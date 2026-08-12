@@ -1,1 +1,443 @@
-<h1>Success</h1>
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    {% include './reuseables/header.html' %}
+    <style>
+        /* =========================================
+           QUOTE SECTION
+           ========================================= */
+        
+        .quote-section {
+            width: 100%;
+            padding: 10px 20px;
+            background: #f4f7fb;
+        }
+        
+        
+        /* MAIN CARD */
+        
+        .quote-card {
+            width: 100%;
+            max-width: 950px;
+            min-height: 480px;
+            margin: 0 auto;
+        
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+        
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+        
+            box-shadow: 0 15px 40px rgba(15, 50, 90, 0.10);
+        }
+        
+        
+        /* =========================================
+           LEFT IMAGE
+           ========================================= */
+        
+        .quote-visual {
+            position: relative;
+            min-height: 480px;
+        
+            background-image:
+                linear-gradient(
+                    rgba(8, 55, 105, 0.72),
+                    rgba(8, 55, 105, 0.72)
+                ),
+                url("{% static 'assets/img/cars/car10.jpg' %}");
+        
+            background-size: cover;
+            background-position: center;
+        }
+        
+        
+        .quote-overlay {
+            position: absolute;
+            left: 35px;
+            right: 35px;
+            bottom: 35px;
+        
+            color: #ffffff;
+        }
+        
+       
+        
+        
+        .quote-overlay h1 {
+            font-size: 32px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        
+        
+        .quote-overlay p {
+            max-width: 410px;
+        
+            margin: 0;
+        
+            color: rgba(255,255,255,0.88);
+        
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        
+        /* =========================================
+           RIGHT QUOTE
+           ========================================= */
+        
+           .quote-details {
+    padding: 35px 40px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+        
+        
+        /* Heading */
+        
+        .quote-heading span {
+            color: #1769d1;
+        
+            font-size: 12px;
+        
+            font-weight: 800;
+        
+            letter-spacing: 1.5px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        
+        .quote-heading h2 {
+            margin: 7px 0 25px;
+        
+            font-size: 25px;
+            margin-bottom: 18px;
+        
+            font-weight: 700;
+        
+            color: #172033;
+            text-align: center;
+            width: 100%;
+        }
+        
+        /* =========================================
+           MOBILE
+           ========================================= */
+        
+        @media (max-width: 900px) {
+        
+            .quote-card {
+                grid-template-columns: 1fr;
+            }
+        
+            .quote-visual {
+                min-height: 400px;
+            }
+        
+            .quote-details {
+                padding: 40px 35px;
+            }
+        
+        }
+        
+        
+        @media (max-width: 550px) {
+        
+            .quote-section {
+                padding: 20px 10px;
+            }
+        
+            .quote-visual {
+                min-height: 350px;
+            }
+        
+            .quote-overlay {
+                left: 30px;
+                right: 30px;
+                bottom: 30px;
+            }
+        
+            .quote-overlay h1 {
+                font-size: 32px;
+            }
+        
+            .quote-details {
+                padding: 30px 22px;
+            }
+        
+            .quote-price div {
+                font-size: 40px;
+            }
+        
+            .quote-info-grid {
+                grid-template-columns: 1fr;
+            }
+        
+        }
+
+
+        /* New Css */
+        .success-icon {
+            width: 50px;
+            height: 50px;
+
+            margin: 20px auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+            color: #ffffff;
+
+            font-size: 38px;
+
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .success-icon i {
+            line-height: 1;
+        }
+        .success-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    min-height: 450px;
+    padding: 40px 30px;
+}
+.call-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: fit-content;
+
+    margin: auto auto 0;
+
+    padding: 12px 30px;
+
+    border-radius: 10px;
+
+    background: #1769d1;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+}
+
+.call-btn:hover {
+    background: #0e56b2;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(23, 105, 209, 0.25);
+}
+.success-images {
+    background: #f4f7fb;
+}
+
+.success-image-card {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.success-image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Dark overlay */
+.image-overlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: 25px;
+
+    background: linear-gradient(
+        transparent,
+        rgba(0, 0, 0, 0.8)
+    );
+
+    color: white;
+
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Image zoom */
+.success-image-card:hover img {
+    transform: scale(1.1);
+}
+
+/* Show text */
+.success-image-card:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-overlay h5 {
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.image-overlay p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+        </style>
+
+    <body>
+        {% include './reuseables/navigation.html' %}
+        <main class="main">
+            <section id="hero" class="hero section dark-background">
+
+                <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
+          
+                <div class="container">
+                    <div id="quotePreview">
+                        <section id="quote-section" class="quote-section">
+                            <div class="quote-card">
+                                <div class="quote-visual">
+                                    <div class="quote-overlay">
+                                        <span class="quote-badge">
+                                            VEHICLE SHIPPING
+                                        </span>
+                                        <h1>
+                                            Your Car,<br>
+                                            Our Responsibility.
+                                        </h1>
+                                        <p>
+                                            A reliable and professional way to
+                                            transport your vehicle safely to its
+                                            destination.
+                                        </p>
+                                </div>
+                            </div>
+    
+    
+                            <!-- RIGHT: QUOTE -->
+                            <div class="quote-details">
+                                <div class="quote-heading">
+                                    <span>Thank you Mr. {{ quote.first_name }} {{ quote.last_name }}
+                                    </span>
+                                    <h2>
+                                        Your form submited successfully 
+                                        <div class="success-icon">
+                                            <i class="bi bi-check-lg"></i>
+                                        </div>
+                                    </h2>
+                                </div>
+                                <a href="tel:+937000030316" class="call-btn">
+                                    <i class="bi bi-telephone-fill"></i>
+                                    Call Us
+                                </a>
+                            </div>
+                        </section>    
+                    </div>
+    
+                </div>
+    
+            </section>
+
+                <!-- Featured Services Section -->
+    <section id="featured-services" class="featured-services section">
+
+        <div class="container">
+    
+            <div class="row g-4">
+    
+                <!-- Image 1 -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="success-image-card">
+                        <img src="{% static 'assets/img/cars/car1.jpg' %}"
+                             alt="Car Transport"
+                             class="img-fluid">
+    
+                        <div class="image-overlay">
+                            <h5>Safe Transportation</h5>
+                            <p>Your vehicle is in safe hands.</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Image 2 -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="success-image-card">
+                        <img src="{% static 'assets/img/cars/car2.jpg' %}"
+                             alt="Vehicle Shipping"
+                             class="img-fluid">
+    
+                        <div class="image-overlay">
+                            <h5>Reliable Service</h5>
+                            <p>Reliable vehicle shipping nationwide.</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Image 3 -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="success-image-card">
+                        <img src="{% static 'assets/img/cars/car3.jpg' %}"
+                             alt="Car Delivery"
+                             class="img-fluid">
+    
+                        <div class="image-overlay">
+                            <h5>Fast Delivery</h5>
+                            <p>We get your vehicle where it needs to go.</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Image 4 -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="success-image-card">
+                        <img src="{% static 'assets/img/cars/car4.jpg' %}"
+                             alt="Auto Transport"
+                             class="img-fluid">
+    
+                        <div class="image-overlay">
+                            <h5>Trusted Transport</h5>
+                            <p>Professional auto transportation.</p>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+        </div>
+  
+      </section><!-- /Featured Services Section -->
+        </main>
+    </body>
+        {% include './reuseables/footer.html' %}
+
+</html>

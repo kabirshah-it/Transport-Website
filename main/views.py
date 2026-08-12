@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from .forms import QuoteForm
 from .models import Quote
 
-
+from django.core.mail import send_mail
+from django.conf import settings
 def calculate_quote(distance, vehicle_type):
 
     rates = {
@@ -89,6 +90,57 @@ def quote_details(request):
             # =========================
 
             quote.save()
+            # Email customer
+            send_mail(
+                subject="Your Vehicle Shipping Quote",
+                message=f"""
+                Hello {quote.first_name},
+
+                Thank you for choosing us for your vehicle transportation needs.
+
+                Your quote has been successfully submitted.
+
+                Pickup: {quote.pickup_city}
+                Delivery: {quote.delivery_city}
+                Vehicle: {quote.vehicle_type}
+                Distance: {quote.distance} miles
+                Quote Price: ${quote.quote_price}
+
+                We will contact you shortly.
+
+                Thank you,
+                Your Transport Company
+                """,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[quote.email],
+                fail_silently=False,
+            )
+
+
+            # Email you
+            send_mail(
+                subject=f"New Vehicle Shipping Quote - {quote.first_name} {quote.last_name}",
+                message=f"""
+                A new vehicle shipping quote has been submitted.
+
+                Customer:
+                Name: {quote.first_name} {quote.last_name}
+                Email: {quote.email}
+                Phone: {quote.phone}
+
+                Shipping Information:
+                Pickup: {quote.pickup_city}
+                Delivery: {quote.delivery_city}
+                Vehicle: {quote.vehicle_type}
+                Distance: {quote.distance} miles
+                Pickup Date: {quote.pickup_date}
+
+                Quote Price: ${quote.quote_price}
+                """,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=["ksmafg1@gmail.com"],
+                    fail_silently=False,
+            )
 
             # Optional: clear session after saving
             # request.session.pop("quote", None)

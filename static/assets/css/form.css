@@ -288,7 +288,7 @@ select.custom-input {
 
 .next-btn {
 
-    background:#0d6efd;
+    background: #1769d1;
     color:white;
 
 }
@@ -305,7 +305,7 @@ select.custom-input {
 
 .quote-btn {
 
-    background:#198754;
+    background:#1769d1;
     color:white;
 
 }
@@ -373,7 +373,7 @@ select.custom-input {
 
 .progress-step.active span {
 
-    background:#0d6efd;
+    background:#1769d1;
 
     color:white;
 
@@ -383,7 +383,7 @@ select.custom-input {
 
 .progress-step.active p {
 
-    color:#0d6efd;
+    color:#1769d1;
 
 }
 
