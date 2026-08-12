@@ -90,57 +90,57 @@ def quote_details(request):
             # =========================
 
             quote.save()
-            # Email customer
-            send_mail(
-                subject="Your Vehicle Shipping Quote",
-                message=f"""
-                Hello {quote.first_name},
+            # # Email customer
+            # send_mail(
+            #     subject="Your Vehicle Shipping Quote",
+            #     message=f"""
+            #     Hello {quote.first_name},
 
-                Thank you for choosing us for your vehicle transportation needs.
+            #     Thank you for choosing us for your vehicle transportation needs.
 
-                Your quote has been successfully submitted.
+            #     Your quote has been successfully submitted.
 
-                Pickup: {quote.pickup_city}
-                Delivery: {quote.delivery_city}
-                Vehicle: {quote.vehicle_type}
-                Distance: {quote.distance} miles
-                Quote Price: ${quote.quote_price}
+            #     Pickup: {quote.pickup_city}
+            #     Delivery: {quote.delivery_city}
+            #     Vehicle: {quote.vehicle_type}
+            #     Distance: {quote.distance} miles
+            #     Quote Price: ${quote.quote_price}
 
-                We will contact you shortly.
+            #     We will contact you shortly.
 
-                Thank you,
-                Your Transport Company
-                """,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[quote.email],
-                fail_silently=False,
-            )
+            #     Thank you,
+            #     Your Transport Company
+            #     """,
+            #     from_email=settings.DEFAULT_FROM_EMAIL,
+            #     recipient_list=[quote.email],
+            #     fail_silently=False,
+            # )
 
 
-            # Email you
-            send_mail(
-                subject=f"New Vehicle Shipping Quote - {quote.first_name} {quote.last_name}",
-                message=f"""
-                A new vehicle shipping quote has been submitted.
+            # # Email you
+            # send_mail(
+            #     subject=f"New Vehicle Shipping Quote - {quote.first_name} {quote.last_name}",
+            #     message=f"""
+            #     A new vehicle shipping quote has been submitted.
 
-                Customer:
-                Name: {quote.first_name} {quote.last_name}
-                Email: {quote.email}
-                Phone: {quote.phone}
+            #     Customer:
+            #     Name: {quote.first_name} {quote.last_name}
+            #     Email: {quote.email}
+            #     Phone: {quote.phone}
 
-                Shipping Information:
-                Pickup: {quote.pickup_city}
-                Delivery: {quote.delivery_city}
-                Vehicle: {quote.vehicle_type}
-                Distance: {quote.distance} miles
-                Pickup Date: {quote.pickup_date}
+            #     Shipping Information:
+            #     Pickup: {quote.pickup_city}
+            #     Delivery: {quote.delivery_city}
+            #     Vehicle: {quote.vehicle_type}
+            #     Distance: {quote.distance} miles
+            #     Pickup Date: {quote.pickup_date}
 
-                Quote Price: ${quote.quote_price}
-                """,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=["ksmafg1@gmail.com"],
-                    fail_silently=False,
-            )
+            #     Quote Price: ${quote.quote_price}
+            #     """,
+            #         from_email=settings.DEFAULT_FROM_EMAIL,
+            #         recipient_list=["ksmafg1@gmail.com"],
+            #         fail_silently=False,
+            # )
 
             # Optional: clear session after saving
             # request.session.pop("quote", None)
@@ -174,3 +174,11 @@ def quote_success(request, quote_id):
             "quote": quote
         }
     )
+
+
+def about(request):
+    return render(request, 'about.html')
+
+
+def services(request):
+    return render(request, 'services.html')

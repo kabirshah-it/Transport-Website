@@ -9,6 +9,6 @@ urlpatterns = [
         views.quote_success,
         name="quoteSuccess"
     ),
-
-
+    path('about/', views.about, name='about'),
+    path('services/', views.services, name='services')
 ]

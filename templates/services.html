@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    {% include './reuseables/header.html' %}
+    <body>
+    {% include './reuseables/navigation.html' %}
+        <main class="main">
+            <!-- Hero Section -->
+            <section id="hero" class="hero section dark-background">
+
+                <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
+        
+                <div class="container text-center">
+                    <h3 class="class=fs-3">
+                        <i class="bi bi-info-circle"></i>
+                        Learn More About Us
+                    </h3>
+                </div>
+        
+            </section>
+            <!-- /Hero Section -->
+            <!-- Services Section -->
+            <section id="services" class="services section">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                <span>Our Services<br></span>
+                <h2>Our ServiceS</h2>
+                <p>We provide dependable vehicle shipping solutions designed to make transportation fast, secure, and hassle-free.</p>
+                </div><!-- End Section Title -->
+        
+                <div class="container">
+        
+                <div class="row gy-4">
+        
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{% static 'assets/img/cars/car4.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                        <h3>Open Car Transport</h3>
+                        <p>The most affordable and popular shipping option, offering safe and reliable transportation for everyday vehicles.</p>
+                    </div>
+                    </div><!-- End Card Item -->
+        
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{% static 'assets/img/cars/car5.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                        <h3><a href="#" class="stretched-link">Enclosed Car Transport</a></h3>
+                        <p>Premium protection for luxury, classic, exotic, and high-value vehicles with fully enclosed carriers.</p>
+                    </div>
+                    </div><!-- End Card Item -->
+        
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{% static 'assets/img/cars/car12.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                        <h3><a href="#" class="stretched-link">Door-to-Door Delivery</a></h3>
+                        <p>Enjoy maximum convenience with vehicle pickup and delivery directly to your preferred locations, saving you time and effort.</p>
+                    </div>
+                    </div><!-- End Card Item -->
+                    {% comment %}
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{% static 'assets/img/service-4.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                        <h3><a href="#" class="stretched-link">Trucking</a></h3>
+                        <p>Dicta quam similique quia architecto eos nisi aut ratione aut ipsum reiciendis sit doloremque oluptatem aut et molestiae ut et nihil</p>
+                    </div>
+                    </div><!-- End Card Item -->
+        
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{% static 'assets/img/service-5.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                        <h3>Packaging</h3>
+                        <p>Illo consequuntur quisquam delectus praesentium modi dignissimos facere vel cum onsequuntur maiores beatae consequatur magni voluptates</p>
+                    </div>
+                    </div><!-- End Card Item -->
+        
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{% static 'assets/img/service-6.jpg' %}" alt="" class="img-fluid">
+                        </div>
+                        <h3><a href="#" class="stretched-link">Warehousing</a></h3>
+                        <p>Quas assumenda non occaecati molestiae. In aut earum sed natus eatae in vero. Ab modi quisquam aut nostrum unde et qui est non quo nulla</p>
+                    </div>
+                    </div><!-- End Card Item -->
+                    {% endcomment %}
+                </div>
+        
+                </div>
+        
+            </section>
+            <!-- /Services Section -->
+        </main>
+    </body>
+    {% include './reuseables/footer.html' %}
+</html>

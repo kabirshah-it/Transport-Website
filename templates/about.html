@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    {% include './reuseables/header.html' %}
+    <body>
+    {% include './reuseables/navigation.html' %}
+        <main class="main">
+            <!-- Hero Section -->
+            <section id="hero" class="hero section dark-background">
+
+                <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
+        
+                <div class="container text-center">
+                    <h3 class="class=fs-3">
+                        <i class="bi bi-info-circle"></i>
+                        Learn More About Us
+                    </h3>
+                </div>
+        
+            </section>
+            <!-- /Hero Section -->
+            <!-- About Section -->
+            <section id="about" class="about section">
+
+                <div class="container">
+        
+                <div class="row gy-4">
+        
+                    <div class="col-lg-6 position-relative align-self-start order-lg-last order-first" data-aos="fade-up" data-aos-delay="200">
+                    <img src="{% static 'assets/img/cars/car11.jpg' %}" class="img-fluid" alt="">
+                    <!-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a> -->
+                    </div>
+        
+                    <div class="col-lg-6 content order-last  order-lg-first" data-aos="fade-up" data-aos-delay="100">
+                    <h3>About Us</h3>
+                    <p>
+                        We make vehicle shipping simple, reliable, and hassle-free. From instant quotes to secure nationwide transport, we're committed to delivering your vehicle safely, on time, and with exceptional customer service.
+                    </p>
+                    <ul>
+                        <li>
+                        <i class="bi bi-diagram-3"></i>
+                        <div>
+                            <h5>Trusted Transport</h5>
+                            <p>Safe and secure vehicle shipping backed by experienced professionals.</p>
+                        </div>
+                        </li>
+                        <li>
+                        <i class="bi bi-fullscreen-exit"></i>
+                        <div>
+                            <h5>Fast & Affordable</h5>
+                            <p>Quick quotes, competitive pricing, and hassle-free booking every time.</p>
+                        </div>
+                        </li>
+                        <li>
+                        <i class="bi bi-broadcast"></i>
+                        <div>
+                            <h5>Customer First</h5>
+                            <p>Your satisfaction is our top priority. Our dedicated support team keeps you informed throughout every step of the shipping process, providing transparent communication, timely updates, and personalized assistance to ensure a smooth, worry-free experience from pickup to delivery.</p>
+                        </div>
+                        </li>
+                    </ul>
+                    </div>
+        
+                </div>
+        
+                </div>
+        
+            </section>
+            <!-- /About Section -->
+        </main>
+    </body>
+    {% include './reuseables/footer.html' %}
+</html>
