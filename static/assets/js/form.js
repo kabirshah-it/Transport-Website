@@ -205,30 +205,31 @@ function calculateDistance() {
     document.getElementById("distance_value").value = distance;
 }
 
-
-const pickupOption = document.getElementById("pickupOption");
-const customDateContainer = document.getElementById("customDateContainer");
-const customDate = document.getElementById("customDate");
-
-pickupOption.addEventListener("change", function () {
-
-    if (this.value === "Custom Date") {
-
-        customDateContainer.style.display = "block";
-        customDate.required = true;
-
-    } else {
-
-        customDateContainer.style.display = "none";
-        customDate.required = false;
-        customDate.value = "";
-
-    }
-
-});
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    
+    const pickupOption = document.getElementById("pickupOption");
+    const customDateContainer = document.getElementById("customDateContainer");
+    const customDate = document.getElementById("customDate");
+
+    if (pickupOption && customDateContainer && customDate) {
+
+        pickupOption.addEventListener("change", function () {
+
+            if (this.value === "Custom Date") {
+
+                customDateContainer.style.display = "block";
+                customDate.required = true;
+
+            } else {
+
+                customDateContainer.style.display = "none";
+                customDate.required = false;
+                customDate.value = "";
+
+            }
+
+        });
+
+    }
 
 });
