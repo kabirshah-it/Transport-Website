@@ -49,9 +49,20 @@ let toLocation = null;
 
 async function loadCities() {
 
-    const response = await fetch("/static/assets/data/us-cities.json");
+    const response = await fetch("/static/assets/data/usa_locations_optimized.json");
 
-    cities = await response.json();
+    const data = await response.json();
+
+    cities = Object.entries(data).map(([zip, location]) => ({
+        zip: zip,
+        city: location.city,
+        state: location.state,
+        lat: location.lat,
+        lng: location.lng
+    }));
+
+    console.log("Locations loaded:", cities.length);
+    console.log("First location:", cities[0]);
 
     initializeAutocomplete();
 
@@ -60,16 +71,14 @@ async function loadCities() {
 loadCities();
 function initializeAutocomplete() {
 
-    const options = cities.map(city => ({
-
-        value: city.city + ", " + city.state,
-
-        text: city.city + ", " + city.state,
-
-        lat: city.lat,
-
-        lng: city.lng
-
+    const options = cities.map(location => ({
+        value: location.zip,
+        text: location.city + ", " + location.state + " " + location.zip,
+        city: location.city,
+        state: location.state,
+        zip: location.zip,
+        lat: location.lat,
+        lng: location.lng
     }));
 
 
