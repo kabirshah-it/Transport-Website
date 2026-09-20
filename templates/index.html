@@ -439,9 +439,22 @@
                                       type="date"
                                       id="pickupDate"
                                       name="pickup_date"
+                                      min=""
                                       class="form-control rounded-pill"
                                       required
                                   >
+                                  <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        const pickupDate = document.getElementById("pickupDate");
+                                
+                                        const today = new Date();
+                                        const year = today.getFullYear();
+                                        const month = String(today.getMonth() + 1).padStart(2, "0");
+                                        const day = String(today.getDate()).padStart(2, "0");
+                                
+                                        pickupDate.min = `${year}-${month}-${day}`;
+                                    });
+                                </script>
 
 
           
