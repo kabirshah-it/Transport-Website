@@ -11,12 +11,18 @@ const map = L.map('map').setView([39.8283,-98.5795],4);
 
 // Map Tiles
 
+const GEOAPIFY_API_KEY = '0e8a10c7d7d64ab5a4e972eacaf4df5d';
+
 L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    `https://maps.geoapify.com/v1/tile/osm-carto/{z}/{x}/{y}.png?apiKey=${GEOAPIFY_API_KEY}`,
     {
-        attribution: '&copy; OpenStreetMap contributors'
+        maxZoom: 20,
+        attribution:
+            'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | ' +
+            '<a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>'
     }
 ).addTo(map);
+
 
 
 // Show Custom Date
@@ -42,44 +48,50 @@ L.tileLayer(
 // });
 
 
-let cities = [];
-
 let fromLocation = null;
 let toLocation = null;
 
 async function loadCities() {
 
-    const response = await fetch("/static/assets/data/usa_locations_optimized.json");
+    try {
 
-    const data = await response.json();
+        const response = await fetch(
+            "/static/assets/data/usa_locations_optimized.json"
+        );
 
-    cities = Object.entries(data).map(([zip, location]) => ({
-        zip: zip,
-        city: location.city,
-        state: location.state,
-        lat: location.lat,
-        lng: location.lng
-    }));
+        if (!response.ok) {
+            throw new Error("Failed to load location data.");
+        }
 
-    console.log("Locations loaded:", cities.length);
-    console.log("First location:", cities[0]);
+        const data = await response.json();
 
-    initializeAutocomplete();
+        const options = Object.entries(data).map(([zip, location]) => ({
+            value: zip,
+            text: location.city + ", " + location.state + " " + zip,
+            city: location.city,
+            state: location.state,
+            zip: zip,
+            lat: location.lat,
+            lng: location.lng
+        }));
+
+        console.log("Locations loaded:", options.length);
+        console.log("First location:", options[0]);
+
+        initializeAutocomplete(options);
+
+    } catch (error) {
+
+        console.error("Location data error:", error);
+
+    }
 
 }
 
 loadCities();
-function initializeAutocomplete() {
 
-    const options = cities.map(location => ({
-        value: location.zip,
-        text: location.city + ", " + location.state + " " + location.zip,
-        city: location.city,
-        state: location.state,
-        zip: location.zip,
-        lat: location.lat,
-        lng: location.lng
-    }));
+
+function initializeAutocomplete(options) {
 
 
     const from = new TomSelect("#fromCity", {
@@ -88,18 +100,46 @@ function initializeAutocomplete() {
         valueField: "value",
         labelField: "text",
         searchField: "text",
+        score: function(search) {
+            const query = search.toLowerCase();
+        
+            return function(item) {
+                const text = item.text.toLowerCase();
+        
+                if (text.startsWith(query)) {
+                    return 1;
+                }
+        
+                if (text.includes(query)) {
+                    return 0.5;
+                }
+        
+                return 0;
+            };
+        },
     
         maxItems: 1,      // Only one city
         create: false,
         persist: false,
+        maxOptions: 50,
 
         onChange(value) {
 
             fromLocation = options.find(o => o.value === value);
-
+        
+            if (fromLocation) {
+                document.getElementById("pickup_city").value =
+                    fromLocation.city + ", " +
+                    fromLocation.state + " " +
+                    fromLocation.zip;
+            }
+        
             console.log("FROM:", fromLocation);
+            console.log("Pickup submitted value:",
+                document.getElementById("pickup_city").value);
+        
             updateMap();
-
+        
         }
 
     });
@@ -111,18 +151,46 @@ function initializeAutocomplete() {
         valueField: "value",
         labelField: "text",
         searchField: "text",
+        score: function(search) {
+            const query = search.toLowerCase();
+        
+            return function(item) {
+                const text = item.text.toLowerCase();
+        
+                if (text.startsWith(query)) {
+                    return 1;
+                }
+        
+                if (text.includes(query)) {
+                    return 0.5;
+                }
+        
+                return 0;
+            };
+        },
     
         maxItems: 1,
         create: false,
         persist: false,
+        maxOptions: 50,
 
         onChange(value) {
 
             toLocation = options.find(o => o.value === value);
-
+        
+            if (toLocation) {
+                document.getElementById("delivery_city").value =
+                    toLocation.city + ", " +
+                    toLocation.state + " " +
+                    toLocation.zip;
+            }
+        
             console.log("TO:", toLocation);
+            console.log("Delivery submitted value:",
+                document.getElementById("delivery_city").value);
+        
             updateMap();
-
+        
         }
 
     });

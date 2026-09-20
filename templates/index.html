@@ -2,808 +2,865 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% include './reuseables/header.html' %}
-<style>
-  /* =========================================
-   CONTINUE BUTTON
-   ========================================= */
+  {% include './reuseables/header.html' %}
+  <style>
+    /* =========================================
+    CONTINUE BUTTON
+    ========================================= */
 
-.quote-continue-btn {
-    width: 100%;
+  .quote-continue-btn {
+      width: 100%;
 
-    margin-top: 18px;
-    padding: 13px 18px;
+      margin-top: 18px;
+      padding: 13px 18px;
 
-    border: none;
+      border: none;
 
-    border-radius: 12px;
+      border-radius: 12px;
 
+      background: #1769d1;
+
+      color: #ffffff;
+
+      font-size: 15px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: all 0.25s ease;
+  }
+
+
+  .quote-continue-btn span {
+      margin-left: 8px;
+
+      font-size: 18px;
+  }
+  .distance-box{
     background: #1769d1;
+  }
 
-    color: #ffffff;
+  .quote-continue-btn:hover {
+      background: #0e56b2;
 
-    font-size: 15px;
+      transform: translateY(-2px);
 
-    font-weight: 700;
+      box-shadow:
+          0 8px 20px rgba(23,105,209,0.25);
+  }
 
-    cursor: pointer;
+  .vehicle-selector {
+      position: relative;
+      width: 100%;
+  }
 
-    transition: all 0.25s ease;
-}
 
+  /* SELECTED FIELD */
 
-.quote-continue-btn span {
-    margin-left: 8px;
+  .vehicle-selected {
+      width: 100%;
+      min-height: 52px;
 
-    font-size: 18px;
-}
-.distance-box{
-  background: #1769d1;
-}
+      padding: 10px 15px;
 
-.quote-continue-btn:hover {
-    background: #0e56b2;
+      border: 1px solid #dce2e9;
+      border-radius: 10px;
 
-    transform: translateY(-2px);
+      background: #ffffff;
 
-    box-shadow:
-        0 8px 20px rgba(23,105,209,0.25);
-}
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-.vehicle-selector {
-    position: relative;
-    width: 100%;
-}
+      cursor: pointer;
 
+      transition: all 0.2s ease;
+  }
 
-/* SELECTED FIELD */
+  .vehicle-selected:hover {
+      border-color: #1769d1;
+  }
 
-.vehicle-selected {
-    width: 100%;
-    min-height: 52px;
+  .vehicle-selected-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
 
-    padding: 10px 15px;
+      color: #273449;
+  }
 
-    border: 1px solid #dce2e9;
-    border-radius: 10px;
+  .vehicle-selected-left i {
+      color: #1769d1;
+      font-size: 21px;
+  }
 
-    background: #ffffff;
+  .vehicle-selected-left span {
+      font-size: 14px;
+  }
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .vehicle-arrow {
+      color: #7c8795;
+      font-size: 13px;
+  }
 
-    cursor: pointer;
 
-    transition: all 0.2s ease;
-}
+  /* DROPDOWN */
 
-.vehicle-selected:hover {
-    border-color: #1769d1;
-}
+  .vehicle-dropdown {
+      position: absolute;
 
-.vehicle-selected-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+      top: calc(100% + 7px);
+      left: 0;
+      right: 0;
 
-    color: #273449;
-}
+      background: #ffffff;
 
-.vehicle-selected-left i {
-    color: #1769d1;
-    font-size: 21px;
-}
+      border: 1px solid #e0e6ed;
 
-.vehicle-selected-left span {
-    font-size: 14px;
-}
+      border-radius: 12px;
 
-.vehicle-arrow {
-    color: #7c8795;
-    font-size: 13px;
-}
+      padding: 7px;
 
+      box-shadow: 0 15px 35px rgba(20, 45, 80, 0.15);
 
-/* DROPDOWN */
+      z-index: 1000;
 
-.vehicle-dropdown {
-    position: absolute;
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+  }
 
-    top: calc(100% + 7px);
-    left: 0;
-    right: 0;
 
-    background: #ffffff;
+  /* OPEN */
 
-    border: 1px solid #e0e6ed;
+  .vehicle-selector.open .vehicle-dropdown {
+      display: block;
+  }
 
-    border-radius: 12px;
 
-    padding: 7px;
+  /* OPTIONS */
 
-    box-shadow: 0 15px 35px rgba(20, 45, 80, 0.15);
+  .vehicle-option {
+      display: flex;
+      align-items: center;
 
-    z-index: 1000;
+      gap: 13px;
 
-    display: none;
-}
+      padding: 12px 13px;
 
+      border-radius: 8px;
 
-/* OPEN */
+      cursor: pointer;
 
-.vehicle-selector.open .vehicle-dropdown {
-    display: block;
-}
+      transition: all 0.15s ease;
+  }
 
+  .vehicle-option i {
+      width: 28px;
 
-/* OPTIONS */
+      color: #1769d1;
 
-.vehicle-option {
-    display: flex;
-    align-items: center;
+      font-size: 21px;
 
-    gap: 13px;
+      text-align: center;
+  }
 
-    padding: 12px 13px;
+  .vehicle-option span {
+      color: #273449;
 
-    border-radius: 8px;
+      font-size: 14px;
 
-    cursor: pointer;
+      font-weight: 500;
+  }
 
-    transition: all 0.15s ease;
-}
+  .vehicle-option:hover {
+      background: #eef6ff;
+  }
 
-.vehicle-option i {
-    width: 28px;
+  .vehicle-option:hover span {
+      color: #1769d1;
+  }
 
-    color: #1769d1;
 
-    font-size: 21px;
+  /* HIDE REAL SELECT */
 
-    text-align: center;
-}
+  .vehicle-hidden-select {
+      position: absolute;
 
-.vehicle-option span {
-    color: #273449;
+      width: 1px;
+      height: 1px;
 
-    font-size: 14px;
+      opacity: 0;
 
-    font-weight: 500;
-}
+      pointer-events: none;
+  }
 
-.vehicle-option:hover {
-    background: #eef6ff;
-}
+  </style>
+  <body class="index-page">
+    {% include './reuseables/navigation.html' %}
 
-.vehicle-option:hover span {
-    color: #1769d1;
-}
+    <main class="main">
 
+      <!-- Hero Section -->
+      <section id="hero" class="hero section dark-background">
 
-/* HIDE REAL SELECT */
+        <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
 
-.vehicle-hidden-select {
-    position: absolute;
+        <div class="container">
 
-    width: 1px;
-    height: 1px;
+          <section class="shipping-section py-5" style="background:transparent ;">
 
-    opacity: 0;
-
-    pointer-events: none;
-}
-
-</style>
-<body class="index-page">
-{% include './reuseables/navigation.html' %}
-
-  <main class="main">
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background">
-
-      <img src="{% static 'assets/img/world-dotted-map.png' %}" alt="" class="hero-bg" data-aos="fade-in">
-
-      <div class="container">
-
-        <section class="shipping-section py-5" style="background:transparent ;">
-
-          <div class="container">
-            <form method="post" action="{% url 'home' %}">
-              {% csrf_token %}
-              <div class="row g-4">
-      
-                  <!-- MAP -->
-      
-                  <div class="col-lg-6">
-      
-                      <div class="map-card">
-      
-                          <div class="distance-box">
-      
-                              <h3 id="distance">
-                                <i class="bi bi-signpost-2-fill info-box-icon">  Distance: 0 Miles</i>
-                                  
-                              </h3>
-      
-                          </div>
-      
-                          <div id="map"></div>
-      
-                      </div>
-      
-                  </div>
-      
-                  <!-- FORM -->
-
-      
+            <div class="container">
+              <form method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="row g-4">
+        
+                    <!-- MAP -->
+        
                     <div class="col-lg-6">
         
-                      <div class="shipping-card">
-                          <h3 class="mb-4" style="color:black ; font-weight: 700;">
-                              Get Shipping Quote
-                          </h3>
+                        <div class="map-card">
         
+                            <div class="distance-box">
         
-                            <!-- FROM -->
-        
-                            <div class="mb-3">
-
-        
-                                <label class="form-label" style="color:black ;">
-                                    <div class="quote-icon">
-                                      <i class="bi bi-geo-alt-fill"> Pickup City</i>
-                                  </div>
-                              
-                                </label>
-        
-                                <select id="fromCity" placeholder="From (City, State, ZIP)" name="pickup_city">
-                                  <option></option>
-                              </select>
+                                <h3 id="distance">
+                                  <i class="bi bi-signpost-2-fill info-box-icon">  Distance: 0 Miles</i>
+                                    
+                                </h3>
         
                             </div>
         
-                            <!-- TO -->
-        
-                            <div class="mb-3">
-        
-                              <label class="form-label" style="color:black ;">
-                                <div class="quote-icon">
-                                  <i class="bi bi-geo-alt-fill"> Dilevry City</i>
-                              </div>
-                          
-                            </label>
-        
-                                <select id="toCity" placeholder="To (City, State,ZIP)" name="delivery_city">
-                                  <option></option>
-                              </select>
-        
-                            </div>
-                              <input type="hidden" id="distance_value" name="distance">
-                            <!-- VEHICLE -->
-        
-                            <div class="mb-3">
-        
-                              <div class="mb-3">
-        
-                                <label class="form-label" style="color:black ;">
-                                  <div class="quote-icon">
-                                    <i class="bi bi-car-front-fill info-box-icon"> Vahicale Type </i>
-                                </div>
-                            
-                              </label>
-        
-                                <!-- New Select  -->
-                                <div class="vehicle-selector">
-
-                                  <div class="vehicle-selected" id="vehicleSelected">
-                                      <div class="vehicle-selected-left">
-                                          <i class="bi bi-car-front-fill" id="selectedVehicleIcon"></i>
-                              
-                                          <span id="selectedVehicleText">
-                                              Select vehicle type
-                                          </span>
-                                      </div>
-                              
-                                      <i class="bi bi-chevron-down vehicle-arrow"></i>
-                                  </div>
-                              
-                              
-                                  <div class="vehicle-dropdown" id="vehicleDropdown">
-                              
-                                      <div class="vehicle-option" data-value="sedan">
-                                          <i class="bi bi-car-front-fill"></i>
-                                          <span>Sedan</span>
-                                      </div>
-                              
-                                      <div class="vehicle-option" data-value="suv">
-                                          <i class="bi bi-car-front"></i>
-                                          <span>SUV</span>
-                                      </div>
-                              
-                                      <div class="vehicle-option" data-value="pickup">
-                                          <i class="bi bi-truck-front-fill"></i>
-                                          <span>Pickup Truck</span>
-                                      </div>
-                              
-                                      <div class="vehicle-option" data-value="van">
-                                          <i class="bi bi-truck-front"></i>
-                                          <span>Van</span>
-                                      </div>
-                              
-                                      <div class="vehicle-option" data-value="motorcycle">
-                                          <i class="bi bi-bicycle"></i>
-                                          <span>Motorcycle</span>
-                                      </div>
-                              
-                                  </div>
-                              
-                                  <!-- Keep this hidden field for Django -->
-                                  <select
-                                      name="vehicle_type"
-                                      id="vehicle_type"
-                                      class="vehicle-hidden-select"
-                                  >
-                              
-                                      <option value="">Select vehicle type</option>
-                              
-                                      <option value="sedan">Sedan</option>
-                              
-                                      <option value="suv">SUV</option>
-                              
-                                      <option value="pickup">Pickup Truck</option>
-                              
-                                      <option value="van">Van</option>
-                              
-                                      <option value="motorcycle">Motorcycle</option>
-                              
-                                  </select>
-                              
-                              </div>
-
-
-
-
-                                <!-- New Select End  -->
-        
-                            </div>
-        
-                            <!-- DATE -->
-        
-                            <div class="mb-3">
-        
-                              <label class="form-label" style="color:black ;">
-                                <div class="quote-icon">
-                                  <i class="bi bi-calendar3 info-box-icon"> Pickup Date </i>
-                              </div>
-                          
-                            </label>
-        
-                                <input
-                                  type="date"
-                                  id="pickupDate"
-                                  name="pickup_date"
-                                  class="form-control rounded-pill"
-                                  required
-                              >
-
-
-        
-                            </div>
-        
-                           
-                            <button class="quote-continue-btn" type="submit">
-        
-                                Get Shipping Quote
-        
-                            </button>
+                            <div id="map"></div>
         
                         </div>
         
                     </div>
+        
+                    <!-- FORM -->
 
-      
+        
+                      <div class="col-lg-6">
+          
+                        <div class="shipping-card">
+                            <h3 class="mb-4" style="color:black ; font-weight: 700;">
+                                Get Shipping Quote
+                            </h3>
+          
+          
+                              <!-- FROM -->
+          
+                              <div class="mb-3">
+
+          
+                                  <label class="form-label" style="color:black ;">
+                                      <div class="quote-icon">
+                                        <i class="bi bi-geo-alt-fill"> Pickup City</i>
+                                      </div>
+                                
+                                  </label>
+          
+                                  <select id="fromCity" placeholder="From (City, State, ZIP)" name="pickup_zip">
+                                    <option></option>
+                                  </select>
+                                
+                                <input type="hidden" id="pickup_city" name="pickup_city">
+          
+                              </div>
+          
+                              <!-- TO -->
+          
+                              <div class="mb-3">
+          
+                                <label class="form-label" style="color:black ;">
+                                  <div class="quote-icon">
+                                    <i class="bi bi-geo-alt-fill"> Dilevry City</i>
+                                  </div>
+                            
+                                </label>
+          
+                                <select id="toCity" placeholder="To (City, State,ZIP)" name="delivery_zip">
+                                  <option></option>
+                                </select>
+                            
+                                <input type="hidden" id="delivery_city" name="delivery_city">
+          
+                              </div>
+                              <input type="hidden" id="distance_value" name="distance">
+                              <!-- VEHICLE -->
+          
+                              <div class="mb-3">
+          
+                                <div class="mb-3">
+          
+                                  <label class="form-label" style="color:black ;">
+                                    <div class="quote-icon">
+                                      <i class="bi bi-car-front-fill info-box-icon"> Vahicale Type </i>
+                                    </div>
+                                  </label>
+          
+                                  <!-- New Select  -->
+                                  <div class="vehicle-selector">
+
+                                    <div class="vehicle-selected" id="vehicleSelected">
+                                        <div class="vehicle-selected-left">
+                                            <i class="bi bi-car-front-fill" id="selectedVehicleIcon"></i>
+                                
+                                            <span id="selectedVehicleText">
+                                                Select vehicle type
+                                            </span>
+                                        </div>
+                                
+                                        <i class="bi bi-chevron-down vehicle-arrow"></i>
+                                    </div>
+                                
+                                
+                                    <div class="vehicle-dropdown" id="vehicleDropdown">
+
+                                      <div class="vehicle-option" data-value="sedan">
+                                          <i class="bi bi-car-front-fill"></i>
+                                          <span>Sedan</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="suv">
+                                          <i class="bi bi-car-front"></i>
+                                          <span>SUV</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="pickup">
+                                          <i class="bi bi-truck-front-fill"></i>
+                                          <span>Pickup Truck</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="van">
+                                          <i class="bi bi-truck-front"></i>
+                                          <span>Van</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="motorcycle">
+                                          <i class="bi bi-bicycle"></i>
+                                          <span>Motorcycle</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="convertible">
+                                          <i class="bi bi-car-front-fill"></i>
+                                          <span>Convertible</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="coupe">
+                                          <i class="bi bi-car-front"></i>
+                                          <span>Coupe</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="wagon">
+                                          <i class="bi bi-car-front-fill"></i>
+                                          <span>Wagon</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="minivan">
+                                          <i class="bi bi-truck-front"></i>
+                                          <span>Minivan</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="commercial-truck">
+                                          <i class="bi bi-truck-front-fill"></i>
+                                          <span>Commercial Truck</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="rv">
+                                          <i class="bi bi-truck-front"></i>
+                                          <span>RV</span>
+                                      </div>
+                                  
+                                      <div class="vehicle-option" data-value="classic">
+                                          <i class="bi bi-car-front-fill"></i>
+                                          <span>Classic Car</span>
+                                      </div>
+                                    </div>
+                                  
+                                  </div>
+                                
+                                    <!-- Keep this hidden field for Django -->
+                                    <select 
+                                        name="vehicle_type" 
+                                        id="vehicle_type" 
+                                        class="vehicle-hidden-select"
+                                    >
+                                      <option value="">Select vehicle type</option>
+
+                                      <option value="sedan">Sedan</option>
+
+                                      <option value="suv">SUV</option>
+
+                                      <option value="pickup">Pickup Truck</option>
+
+                                      <option value="van">Van</option>
+
+                                      <option value="motorcycle">Motorcycle</option>
+
+                                      <option value="convertible">Convertible</option>
+
+                                      <option value="coupe">Coupe</option>
+
+                                      <option value="wagon">Wagon</option>
+
+                                      <option value="minivan">Minivan</option>
+
+                                      <option value="commercial-truck">Commercial Truck</option>
+
+                                      <option value="rv">RV</option>
+
+                                      <option value="classic">Classic Car</option>
+
+                                    </select> 
+                                
+                                </div>
+
+
+
+
+                                  <!-- New Select End  -->
+          
+                              </div>
+          
+                              <!-- DATE -->
+          
+                              <div class="mb-3">
+          
+                                <label class="form-label" style="color:black ;">
+                                  <div class="quote-icon">
+                                    <i class="bi bi-calendar3 info-box-icon"> Pickup Date </i>
+                                </div>
+                            
+                                </label>
+          
+                                    <input
+                                      type="date"
+                                      id="pickupDate"
+                                      name="pickup_date"
+                                      class="form-control rounded-pill"
+                                      required
+                                  >
+
+
+          
+                              </div>
+          
+                            
+                              <button class="quote-continue-btn" type="submit">
+          
+                                  Get Shipping Quote
+          
+                              </button>
+          
+                          </div>
+          
+                      </div>
+
+        
+                </div>
+              </form>
+        
+            </div>
+        
+        </section>
+
+        </div>
+
+      </section><!-- /Hero Section -->
+
+      <!-- Featured Services Section -->
+      <section id="featured-services" class="featured-services section">
+
+        <div class="container">
+
+          <div class="row gy-4">
+
+            <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon flex-shrink-0"><i class="fa-solid fa-cart-flatbed"></i></div>
+              <div>
+                <h4 class="title">Instant Shipping Quotes</h4>
+                <p class="description">Get fast and accurate vehicle shipping estimates in seconds. Compare prices and choose the transport option that best fits your schedule and budget.</p>
+                <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
               </div>
-            </form>
-      
+            </div>
+            <!-- End Service Item -->
+
+            <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon flex-shrink-0"><i class="fa-solid fa-truck"></i></div>
+              <div>
+                <h4 class="title">Nationwide Vehicle Transport</h4>
+                <p class="description">We provide safe and reliable car shipping services across the country. Whether you're moving, buying, or selling a vehicle, we've got you covered.</p>
+                <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon flex-shrink-0"><i class="fa-solid fa-truck-ramp-box"></i></div>
+              <div>
+                <h4 class="title">Real-Time Shipment Tracking</h4>
+                <p class="description">Stay informed throughout the entire shipping process. Track your vehicle's journey and receive updates until it safely reaches its destination.</p>
+                <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div><!-- End Service Item -->
+
           </div>
-      
-      </section>
-
-      </div>
-
-    </section><!-- /Hero Section -->
-
-    <!-- Featured Services Section -->
-    <section id="featured-services" class="featured-services section">
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon flex-shrink-0"><i class="fa-solid fa-cart-flatbed"></i></div>
-            <div>
-              <h4 class="title">Instant Shipping Quotes</h4>
-              <p class="description">Get fast and accurate vehicle shipping estimates in seconds. Compare prices and choose the transport option that best fits your schedule and budget.</p>
-              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-          <!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
-            <div class="icon flex-shrink-0"><i class="fa-solid fa-truck"></i></div>
-            <div>
-              <h4 class="title">Nationwide Vehicle Transport</h4>
-              <p class="description">We provide safe and reliable car shipping services across the country. Whether you're moving, buying, or selling a vehicle, we've got you covered.</p>
-              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
-            <div class="icon flex-shrink-0"><i class="fa-solid fa-truck-ramp-box"></i></div>
-            <div>
-              <h4 class="title">Real-Time Shipment Tracking</h4>
-              <p class="description">Stay informed throughout the entire shipping process. Track your vehicle's journey and receive updates until it safely reaches its destination.</p>
-              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
 
         </div>
 
-      </div>
+      </section><!-- /Featured Services Section -->
 
-    </section><!-- /Featured Services Section -->
+      <!-- Call To Action Section -->
+      <section id="call-to-action" class="call-to-action section dark-background">
 
-    <!-- Call To Action Section -->
-    <section id="call-to-action" class="call-to-action section dark-background">
+        <img src="{% static 'assets/img/cta-bg.jpg' %}" alt="">
 
-      <img src="{% static 'assets/img/cta-bg.jpg' %}" alt="">
-
-      <div class="container">
-        <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
-          <div class="col-xl-10">
-            <div class="text-center">
-              <h3>Ready to Ship Your Vehicle?</h3>
-              <p>Get a fast, free quote today and let our experienced team handle your vehicle with care. Safe transport, competitive pricing, and reliable service are just a click away.</p>
-              <a class="cta-btn" href="#">Request Your Free Quote</a>
+        <div class="container">
+          <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+            <div class="col-xl-10">
+              <div class="text-center">
+                <h3>Ready to Ship Your Vehicle?</h3>
+                <p>Get a fast, free quote today and let our experienced team handle your vehicle with care. Safe transport, competitive pricing, and reliable service are just a click away.</p>
+                <a class="cta-btn" href="#">Request Your Free Quote</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </section><!-- /Call To Action Section -->
+      </section><!-- /Call To Action Section -->
 
-    <!-- Features Section -->
-    <section id="features" class="features section">
+      <!-- Features Section -->
+      <section id="features" class="features section">
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <span>Features</span>
-        <h2>Features</h2>
-        <p>We ensure your vehicle is delivered safely, on time, and with the highest level of care from pickup to final destination.</p>
-      </div><!-- End Section Title -->
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <span>Features</span>
+          <h2>Features</h2>
+          <p>We ensure your vehicle is delivered safely, on time, and with the highest level of care from pickup to final destination.</p>
+        </div><!-- End Section Title -->
 
-      <div class="container">
+        <div class="container">
 
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
-            <img src="{% static 'assets/img/service-4.jpg' %}" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
-            <h3>Fast & Secure Delivery.</h3>
-            <p class="fst-italic">
-              We ensure your vehicle is delivered safely, on time, and with the highest level of care from pickup to final destination.
-            </p>
-            <ul>
-              <li><i class="bi bi-check"></i><span> On-Time Delivery – Reliable scheduling to keep your shipment on track</span></li>
-              <li><i class="bi bi-check"></i> <span>Safe Transportation – Professional carriers and secure handling for every vehicle.</span></li>
-              <li><i class="bi bi-check"></i> <span>Real-Time Updates – Stay informed with shipment status updates throughout the journey.</span></li>
-            </ul>
-          </div>
-        </div><!-- Features Item -->
+          <div class="row gy-4 align-items-center features-item">
+            <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+              <img src="{% static 'assets/img/service-4.jpg' %}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
+              <h3>Fast & Secure Delivery.</h3>
+              <p class="fst-italic">
+                We ensure your vehicle is delivered safely, on time, and with the highest level of care from pickup to final destination.
+              </p>
+              <ul>
+                <li><i class="bi bi-check"></i><span> On-Time Delivery – Reliable scheduling to keep your shipment on track</span></li>
+                <li><i class="bi bi-check"></i> <span>Safe Transportation – Professional carriers and secure handling for every vehicle.</span></li>
+                <li><i class="bi bi-check"></i> <span>Real-Time Updates – Stay informed with shipment status updates throughout the journey.</span></li>
+              </ul>
+            </div>
+          </div><!-- Features Item -->
+          {% comment %}
+          <div class="row gy-4 align-items-center features-item">
+            <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+              <img src="{% static 'assets/img/features-2.jpg' %}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
+              <h3>Corporis temporibus maiores provident</h3>
+              <p class="fst-italic">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                magna aliqua.
+              </p>
+              <p>
+                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum
+              </p>
+            </div>
+          </div><!-- Features Item -->
+
+          <div class="row gy-4 align-items-center features-item">
+            <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
+              <img src="{% static 'assets/img/features-3.jpg' %}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-7" data-aos="fade-up">
+              <h3>Sunt consequatur ad ut est nulla consectetur reiciendis animi voluptas</h3>
+              <p>Cupiditate placeat cupiditate placeat est ipsam culpa. Delectus quia minima quod. Sunt saepe odit aut quia voluptatem hic voluptas dolor doloremque.</p>
+              <ul>
+                <li><i class="bi bi-check"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                <li><i class="bi bi-check"></i><span> Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
+                <li><i class="bi bi-check"></i> <span>Facilis ut et voluptatem aperiam. Autem soluta ad fugiat</span>.</li>
+              </ul>
+            </div>
+          </div><!-- Features Item -->
+
+          <div class="row gy-4 align-items-center features-item">
+            <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out">
+              <img src="{% static 'assets/img/features-4.jpg' %}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-7 order-2 order-md-1" data-aos="fade-up">
+              <h3>Quas et necessitatibus eaque impedit ipsum animi consequatur incidunt in</h3>
+              <p class="fst-italic">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                magna aliqua.
+              </p>
+              <p>
+                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum
+              </p>
+            </div>
+          </div><!-- Features Item -->
+          {% endcomment %}
+        </div>
         {% comment %}
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-            <img src="{% static 'assets/img/features-2.jpg' %}" class="img-fluid" alt="">
+
+      </section><!-- /Features Section -->
+
+
+      
+      <!-- Pricing Section -->
+      <section id="pricing" class="pricing section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <span>Pricing</span>
+          <h2>Pricing</h2>
+          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+          <div class="row gy-4">
+
+            <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pricing-item">
+                <h3>Free Plan</h3>
+                <h4><sup>$</sup>0<span> / month</span></h4>
+                <ul>
+                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
+                  <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
+                  <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                </ul>
+                <a href="#" class="buy-btn">Buy Now</a>
+              </div>
+            </div><!-- End Pricing Item -->
+
+            <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+              <div class="pricing-item featured">
+                <h3>Business Plan</h3>
+                <h4><sup>$</sup>29<span> / month</span></h4>
+                <ul>
+                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
+                  <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
+                  <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                </ul>
+                <a href="#" class="buy-btn">Buy Now</a>
+              </div>
+            </div><!-- End Pricing Item -->
+
+            <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">
+              <div class="pricing-item">
+                <h3>Developer Plan</h3>
+                <h4><sup>$</sup>49<span> / month</span></h4>
+                <ul>
+                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
+                  <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
+                  <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                </ul>
+                <a href="#" class="buy-btn">Buy Now</a>
+              </div>
+            </div><!-- End Pricing Item -->
+
           </div>
-          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
-            <h3>Corporis temporibus maiores provident</h3>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum
-            </p>
-          </div>
-        </div><!-- Features Item -->
-
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
-            <img src="{% static 'assets/img/features-3.jpg' %}" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7" data-aos="fade-up">
-            <h3>Sunt consequatur ad ut est nulla consectetur reiciendis animi voluptas</h3>
-            <p>Cupiditate placeat cupiditate placeat est ipsam culpa. Delectus quia minima quod. Sunt saepe odit aut quia voluptatem hic voluptas dolor doloremque.</p>
-            <ul>
-              <li><i class="bi bi-check"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-              <li><i class="bi bi-check"></i><span> Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-              <li><i class="bi bi-check"></i> <span>Facilis ut et voluptatem aperiam. Autem soluta ad fugiat</span>.</li>
-            </ul>
-          </div>
-        </div><!-- Features Item -->
-
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out">
-            <img src="{% static 'assets/img/features-4.jpg' %}" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up">
-            <h3>Quas et necessitatibus eaque impedit ipsum animi consequatur incidunt in</h3>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum
-            </p>
-          </div>
-        </div><!-- Features Item -->
-        {% endcomment %}
-      </div>
-      {% comment %}
-
-    </section><!-- /Features Section -->
-
-
-    
-    <!-- Pricing Section -->
-    <section id="pricing" class="pricing section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <span>Pricing</span>
-        <h2>Pricing</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
-            <div class="pricing-item">
-              <h3>Free Plan</h3>
-              <h4><sup>$</sup>0<span> / month</span></h4>
-              <ul>
-                <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-              </ul>
-              <a href="#" class="buy-btn">Buy Now</a>
-            </div>
-          </div><!-- End Pricing Item -->
-
-          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
-            <div class="pricing-item featured">
-              <h3>Business Plan</h3>
-              <h4><sup>$</sup>29<span> / month</span></h4>
-              <ul>
-                <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
-                <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-              </ul>
-              <a href="#" class="buy-btn">Buy Now</a>
-            </div>
-          </div><!-- End Pricing Item -->
-
-          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">
-            <div class="pricing-item">
-              <h3>Developer Plan</h3>
-              <h4><sup>$</sup>49<span> / month</span></h4>
-              <ul>
-                <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
-                <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-              </ul>
-              <a href="#" class="buy-btn">Buy Now</a>
-            </div>
-          </div><!-- End Pricing Item -->
 
         </div>
 
-      </div>
+      </section><!-- /Pricing Section -->
+      
+      <!-- Testimonials Section -->
+      <section id="testimonials" class="testimonials section dark-background">
 
-    </section><!-- /Pricing Section -->
-    
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section dark-background">
+        <img src="{% static 'assets/img/testimonials-bg.jpg' %}" class="testimonials-bg" alt="">
 
-      <img src="{% static 'assets/img/testimonials-bg.jpg' %}" class="testimonials-bg" alt="">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
+          <div class="swiper init-swiper">
+            <script type="application/json" class="swiper-config">
+              {
+                "loop": true,
+                "speed": 600,
+                "autoplay": {
+                  "delay": 5000
+                },
+                "slidesPerView": "auto",
+                "pagination": {
+                  "el": ".swiper-pagination",
+                  "type": "bullets",
+                  "clickable": true
+                }
               }
-            }
-          </script>
-          <div class="swiper-wrapper">
+            </script>
+            <div class="swiper-wrapper">
 
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{% static 'assets/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">
-                <h3>Saul Goodman</h3>
-                <h4>Ceo &amp; Founder</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <img src="{% static 'assets/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Saul Goodman</h3>
+                  <h4>Ceo &amp; Founder</h4>
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
                 </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
+              </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{% static 'assets/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">
-                <h3>Sara Wilsson</h3>
-                <h4>Designer</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <img src="{% static 'assets/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Sara Wilsson</h3>
+                  <h4>Designer</h4>
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
                 </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
+              </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{% static 'assets/img/testimonials/testimonials-3.jpg' %} " class="testimonial-img" alt="">
-                <h3>Jena Karlis</h3>
-                <h4>Store Owner</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <img src="{% static 'assets/img/testimonials/testimonials-3.jpg' %} " class="testimonial-img" alt="">
+                  <h3>Jena Karlis</h3>
+                  <h4>Store Owner</h4>
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
                 </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
+              </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{% static 'assets/img/testimonials/testimonials-4.jpg' %}" class="testimonial-img" alt="">
-                <h3>Matt Brandon</h3>
-                <h4>Freelancer</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <img src="{% static 'assets/img/testimonials/testimonials-4.jpg' %}" class="testimonial-img" alt="">
+                  <h3>Matt Brandon</h3>
+                  <h4>Freelancer</h4>
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
                 </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
+              </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{% static 'assets/img/testimonials/testimonials-5.jpg' %}" class="testimonial-img" alt="">
-                <h3>John Larson</h3>
-                <h4>Entrepreneur</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <img src="{% static 'assets/img/testimonials/testimonials-5.jpg' %}" class="testimonial-img" alt="">
+                  <h3>John Larson</h3>
+                  <h4>Entrepreneur</h4>
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
                 </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
+              </div><!-- End testimonial item -->
 
+            </div>
+            <div class="swiper-pagination"></div>
           </div>
-          <div class="swiper-pagination"></div>
+
         </div>
 
-      </div>
+      </section>
+      <!-- /Testimonials Section -->
+      {% endcomment %}
 
-    </section>
-    <!-- /Testimonials Section -->
-    {% endcomment %}
+      <!-- Faq Section -->
+      <section id="faq" class="faq section">
 
-    <!-- Faq Section -->
-    <section id="faq" class="faq section">
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <span>Frequently Asked Questions</span>
+          <h2>Frequently Asked Questions</h2>
+          <p>Most People ask these questions</p>
+        </div><!-- End Section Title -->
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <span>Frequently Asked Questions</span>
-        <h2>Frequently Asked Questions</h2>
-        <p>Most People ask these questions</p>
-      </div><!-- End Section Title -->
+        <div class="container">
 
-      <div class="container">
+          <div class="row justify-content-center">
 
-        <div class="row justify-content-center">
+            <div class="col-lg-10">
 
-          <div class="col-lg-10">
+              <div class="faq-container">
 
-            <div class="faq-container">
+                <div class="faq-item faq-active" data-aos="fade-up" data-aos-delay="200">
+                  <i class="faq-icon bi bi-question-circle"></i>
+                  <h3>How do I get a shipping quote?</h3>
+                  <div class="faq-content">
+                    <p>Simply fill out our online quote form with your pickup and delivery locations, vehicle details, and preferred shipping date. We'll provide you with a fast, free, and accurate estimate.</p>
+                  </div>
+                  <i class="faq-toggle bi bi-chevron-right"></i>
+                </div><!-- End Faq item-->
 
-              <div class="faq-item faq-active" data-aos="fade-up" data-aos-delay="200">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>How do I get a shipping quote?</h3>
-                <div class="faq-content">
-                  <p>Simply fill out our online quote form with your pickup and delivery locations, vehicle details, and preferred shipping date. We'll provide you with a fast, free, and accurate estimate.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                  <i class="faq-icon bi bi-question-circle"></i>
+                  <h3>How long does vehicle shipping take?</h3>
+                  <div class="faq-content">
+                    <p>Delivery times vary depending on the distance, route, weather, and traffic conditions. Most shipments are completed within a few days to two weeks.</p>
+                  </div>
+                  <i class="faq-toggle bi bi-chevron-right"></i>
+                </div><!-- End Faq item-->
 
-              <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>How long does vehicle shipping take?</h3>
-                <div class="faq-content">
-                  <p>Delivery times vary depending on the distance, route, weather, and traffic conditions. Most shipments are completed within a few days to two weeks.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                  <i class="faq-icon bi bi-question-circle"></i>
+                  <h3>Is my vehicle insured during transport?</h3>
+                  <div class="faq-content">
+                    <p>Yes. All vehicles transported through our trusted carriers are covered by insurance throughout the shipping process, giving you peace of mind.</p>
+                  </div>
+                  <i class="faq-toggle bi bi-chevron-right"></i>
+                </div><!-- End Faq item-->
 
-              <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Is my vehicle insured during transport?</h3>
-                <div class="faq-content">
-                  <p>Yes. All vehicles transported through our trusted carriers are covered by insurance throughout the shipping process, giving you peace of mind.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                  <i class="faq-icon bi bi-question-circle"></i>
+                  <h3>What types of vehicles can you transport?</h3>
+                  <div class="faq-content">
+                    <p>We transport a wide range of vehicles, including cars, SUVs, pickup trucks, motorcycles, luxury vehicles, classic cars, and electric vehicles.</p>
+                  </div>
+                  <i class="faq-toggle bi bi-chevron-right"></i>
+                </div><!-- End Faq item-->
 
-              <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>What types of vehicles can you transport?</h3>
-                <div class="faq-content">
-                  <p>We transport a wide range of vehicles, including cars, SUVs, pickup trucks, motorcycles, luxury vehicles, classic cars, and electric vehicles.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
+                  <i class="faq-icon bi bi-question-circle"></i>
+                  <h3>Do I need to prepare my vehicle before shipping?</h3>
+                  <div class="faq-content">
+                    <p>Yes. We recommend removing personal belongings, cleaning your vehicle, checking for any existing damage, and ensuring the fuel tank is no more than one-quarter full before pickup.</p>
+                  </div>
+                  <i class="faq-toggle bi bi-chevron-right"></i>
+                </div><!-- End Faq item-->
 
-              <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Do I need to prepare my vehicle before shipping?</h3>
-                <div class="faq-content">
-                  <p>Yes. We recommend removing personal belongings, cleaning your vehicle, checking for any existing damage, and ensuring the fuel tank is no more than one-quarter full before pickup.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+              </div>
 
             </div>
 
@@ -811,99 +868,97 @@
 
         </div>
 
-      </div>
+      </section><!-- /Faq Section -->
 
-    </section><!-- /Faq Section -->
-
-  </main>
+    </main>
 
   
-</body>
+  </body>
 <!-- JavaScript -->
-<script>
-  const vehicleSelector =
-    document.querySelector(".vehicle-selector");
+  <script>
+    const vehicleSelector =
+      document.querySelector(".vehicle-selector");
 
-const vehicleSelected =
-    document.querySelector("#vehicleSelected");
+  const vehicleSelected =
+      document.querySelector("#vehicleSelected");
 
-const vehicleDropdown =
-    document.querySelector("#vehicleDropdown");
+  const vehicleDropdown =
+      document.querySelector("#vehicleDropdown");
 
-const vehicleSelect =
-    document.querySelector("#vehicle_type");
+  const vehicleSelect =
+      document.querySelector("#vehicle_type");
 
-const selectedVehicleText =
-    document.querySelector("#selectedVehicleText");
+  const selectedVehicleText =
+      document.querySelector("#selectedVehicleText");
 
-const selectedVehicleIcon =
-    document.querySelector("#selectedVehicleIcon");
-
-
-// Open / close dropdown
-
-vehicleSelected.addEventListener("click", function () {
-
-    vehicleSelector.classList.toggle("open");
-
-});
+  const selectedVehicleIcon =
+      document.querySelector("#selectedVehicleIcon");
 
 
-// Select vehicle
+  // Open / close dropdown
 
-document.querySelectorAll(".vehicle-option").forEach(option => {
+  vehicleSelected.addEventListener("click", function () {
 
-    option.addEventListener("click", function () {
+      vehicleSelector.classList.toggle("open");
 
-        const value = this.dataset.value;
-
-        const text =
-            this.querySelector("span").textContent;
-
-        const icon =
-            this.querySelector("i").className;
+  });
 
 
-        // Update visible selector
+  // Select vehicle
 
-        selectedVehicleText.textContent = text;
+  document.querySelectorAll(".vehicle-option").forEach(option => {
 
-        selectedVehicleIcon.className = icon;
+      option.addEventListener("click", function () {
 
+          const value = this.dataset.value;
 
-        // Update REAL Django select
+          const text =
+              this.querySelector("span").textContent;
 
-        vehicleSelect.value = value;
-
-
-        // Trigger change event
-
-        vehicleSelect.dispatchEvent(
-            new Event("change", { bubbles: true })
-        );
+          const icon =
+              this.querySelector("i").className;
 
 
-        // Close dropdown
+          // Update visible selector
 
-        vehicleSelector.classList.remove("open");
+          selectedVehicleText.textContent = text;
 
-    });
-
-});
+          selectedVehicleIcon.className = icon;
 
 
-// Close when clicking outside
+          // Update REAL Django select
 
-document.addEventListener("click", function(event) {
+          vehicleSelect.value = value;
 
-    if (!vehicleSelector.contains(event.target)) {
 
-        vehicleSelector.classList.remove("open");
+          // Trigger change event
 
-    }
+          vehicleSelect.dispatchEvent(
+              new Event("change", { bubbles: true })
+          );
 
-});
-</script>
-{% include './reuseables/footer.html' %}
+
+          // Close dropdown
+
+          vehicleSelector.classList.remove("open");
+
+      });
+
+  });
+
+
+  // Close when clicking outside
+
+  document.addEventListener("click", function(event) {
+
+      if (!vehicleSelector.contains(event.target)) {
+
+          vehicleSelector.classList.remove("open");
+
+      }
+
+  });
+  </script>
+  {% include './reuseables/footer.html' %}
 
 </html>
