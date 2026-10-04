@@ -147,3 +147,21 @@ EMAIL_HOST_USER = "Kabirshah.it@gmail.com"
 EMAIL_HOST_PASSWORD = "bntv nvsq rbon scee"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}

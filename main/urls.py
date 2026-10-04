@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from main.admin_site import transport_admin_site
 urlpatterns = [
     # path('', views.main, name='main'),
     path('', views.home, name="home"),

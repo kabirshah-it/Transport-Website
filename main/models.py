@@ -14,6 +14,9 @@ CONDITION_CHOICES = [
 
 
 class Quote(models.Model):
+    class Meta:
+        verbose_name = "Shipping Quote"
+        verbose_name_plural = "Shipping Quotes"
 
     # =========================
     # Customer Information

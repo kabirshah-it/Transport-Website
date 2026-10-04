@@ -12,10 +12,6 @@ import re
 from functools import lru_cache
 
 
-# ============================================================
-# LOCATION DATA
-# ============================================================
-
 LOCATION_FILE = (
     settings.BASE_DIR
     / "static"
@@ -27,60 +23,27 @@ LOCATION_FILE = (
 
 @lru_cache(maxsize=1)
 def load_locations():
-    """
-    Load the ZIP/location database once and keep it in memory.
-
-    This avoids reading the 2.4 MB JSON file on every request.
-    """
-
     try:
-        with open(
-            LOCATION_FILE,
-            "r",
-            encoding="utf-8"
-        ) as file:
-
+        with open(LOCATION_FILE, "r", encoding="utf-8") as file:
             data = json.load(file)
 
         if not isinstance(data, dict):
-            raise ValueError(
-                "Location database must contain a JSON object."
-            )
+            raise ValueError("Location database must contain a JSON object.")
 
         return data
 
     except FileNotFoundError:
-
         raise RuntimeError(
             f"Location database not found: {LOCATION_FILE}"
         )
 
     except json.JSONDecodeError as error:
-
         raise RuntimeError(
             f"Location database contains invalid JSON: {error}"
         )
 
 
-# ============================================================
-# EXTRACT ZIP CODE
-# ============================================================
-
 def extract_zip(location_text):
-    """
-    Extract a 5-digit ZIP code from a location string.
-
-    Example:
-        Miami, FL 33101
-        Houston, TX 77001
-
-    Returns:
-        '33101'
-        '77001'
-
-    Returns None if no valid ZIP is found.
-    """
-
     if not location_text:
         return None
 
@@ -97,61 +60,28 @@ def extract_zip(location_text):
     return match.group(1)
 
 
-# ============================================================
-# VALIDATE LOCATION
-# ============================================================
-
 def get_valid_location(location_text):
-    """
-    Validate a submitted location against the official
-    server-side ZIP database.
-
-    Returns:
-        {
-            'zip': '33101',
-            'city': 'Miami',
-            'state': 'FL',
-            'lat': 25.7743,
-            'lng': -80.1937
-        }
-
-    Returns None if invalid.
-    """
-
     zip_code = extract_zip(location_text)
 
     if not zip_code:
         return None
 
     locations = load_locations()
-
     location = locations.get(zip_code)
 
     if not location:
         return None
 
     try:
-
         city = str(location["city"]).strip()
         state = str(location["state"]).strip()
-
         lat = float(location["lat"])
         lng = float(location["lng"])
 
-    except (
-        KeyError,
-        TypeError,
-        ValueError
-    ):
-
+    except (KeyError, TypeError, ValueError):
         return None
 
-    # Reject invalid coordinates in the database.
-    if not (
-        -90 <= lat <= 90
-        and
-        -180 <= lng <= 180
-    ):
+    if not (-90 <= lat <= 90 and -180 <= lng <= 180):
         return None
 
     return {
@@ -163,64 +93,25 @@ def get_valid_location(location_text):
     }
 
 
-# ============================================================
-# CANONICAL LOCATION DISPLAY
-# ============================================================
-
 def format_location(location):
-    """
-    Create the official location string used by the application.
-    """
-
-    return (
-        f"{location['city']}, "
-        f"{location['state']} "
-        f"{location['zip']}"
-    )
+    return f"{location['city']}, {location['state']} {location['zip']}"
 
 
-# ============================================================
-# DISTANCE CALCULATION
-# ============================================================
+def calculate_distance(pickup_location, delivery_location):
+    lat1 = math.radians(pickup_location["lat"])
+    lon1 = math.radians(pickup_location["lng"])
 
-def calculate_distance(
-    pickup_location,
-    delivery_location
-):
-    """
-    Calculate great-circle distance in miles.
-
-    This follows the same type of calculation used by
-    Turf's distance(..., units='miles') on the frontend.
-    """
-
-    lat1 = math.radians(
-        pickup_location["lat"]
-    )
-
-    lon1 = math.radians(
-        pickup_location["lng"]
-    )
-
-    lat2 = math.radians(
-        delivery_location["lat"]
-    )
-
-    lon2 = math.radians(
-        delivery_location["lng"]
-    )
+    lat2 = math.radians(delivery_location["lat"])
+    lon2 = math.radians(delivery_location["lng"])
 
     dlat = lat2 - lat1
     dlon = lon2 - lon1
 
     a = (
         math.sin(dlat / 2) ** 2
-        +
-        math.cos(lat1)
-        *
-        math.cos(lat2)
-        *
-        math.sin(dlon / 2) ** 2
+        + math.cos(lat1)
+        * math.cos(lat2)
+        * math.sin(dlon / 2) ** 2
     )
 
     c = 2 * math.atan2(
@@ -228,267 +119,253 @@ def calculate_distance(
         math.sqrt(1 - a)
     )
 
-    # Earth's mean radius in miles.
     earth_radius_miles = 3958.7613
 
-    distance = (
-        earth_radius_miles * c
-    )
+    distance = earth_radius_miles * c
 
     return round(distance)
 
 
-# ============================================================
-# QUOTE CALCULATION
-# ============================================================
+def calculate_quote(distance, vehicle_type):
+    """
+    Calculate the shipping price using the fixed-price system.
 
-def calculate_quote(
-    distance,
-    vehicle_type
-):
+    The distance is used ONLY to select the correct distance bracket.
 
-    # ========================================================
-    # PER-MILE RATES FOR TRIPS OVER 200 MILES
-    # ========================================================
+    There is NO active distance × rate calculation.
 
-    rates = {
-        "sedan": 0.55,
-        "suv": 0.65,
-        "pickup": 0.75,
-        "van": 0.60,
-        "motorcycle": 0.50,
-        "convertible": 0.65,
-        "coupe": 0.60,
-        "wagon": 0.60,
-        "minivan": 0.70,
-        "commercial-truck": 1.00,
-        "rv": 1.10,
-        "classic": 0.85,
+    The old per-mile pricing system is kept below as comments
+    in case we want to use it again later.
+    """
+
+    # ============================================================
+    # VEHICLE CATEGORIES
+    # ============================================================
+
+    vehicle_categories = {
+
+        # STANDARD VEHICLES
+        "sedan": "standard",
+        "motorcycle": "standard",
+        "convertible": "standard",
+        "coupe": "standard",
+        "wagon": "standard",
+
+        # LARGER VEHICLES
+        "suv": "larger",
+        "van": "larger",
+        "classic": "larger",
+
+        # COMMERCIAL VEHICLES
+        "pickup": "commercial",
+        "commercial-truck": "commercial",
     }
 
-    # ========================================================
-    # FIXED PRICES FOR 0–200 MILES
-    # ========================================================
+
+    # ============================================================
+    # FIXED PRICING
+    # ============================================================
 
     fixed_prices = {
 
-        "sedan": {
-            "0-50": 80,
-            "51-100": 120,
-            "101-150": 150,
-            "151-200": 250,
-        },
+        # --------------------------------------------------------
+        # STANDARD
+        # Sedan
+        # Motorcycle
+        # Convertible
+        # Coupe
+        # Wagon
+        # --------------------------------------------------------
 
-        "suv": {
-            "0-50": 80,
-            "51-100": 120,
-            "101-150": 180,
-            "151-200": 250,
-        },
+        "standard": [
+            (0, 50, 200),
+            (51, 100, 250),
+            (101, 150, 300),
+            (151, 200, 350),
+            (201, 250, 400),
+            (251, 300, 400),
+            (301, 350, 450),
+            (351, 400, 550),
+            (401, 500, 700),
+            (501, 600, 800),
+            (601, 800, 950),
+            (801, 1000, 1000),
+            (1001, 1200, 1100),
+            (1201, 1300, 1200),
+            (1301, 1500, 1300),
+            (1501, 1800, 1400),
+            (1801, 2000, 1600),
+            (2001, 2500, 1800),
+            (2501, 3000, 2000),
+        ],
 
-        "pickup": {
-            "0-50": 80,
-            "51-100": 120,
-            "101-150": 180,
-            "151-200": 250,
-        },
 
-        "van": {
-            "0-50": 80,
-            "51-100": 120,
-            "101-150": 180,
-            "151-200": 250,
-        },
+        # --------------------------------------------------------
+        # LARGER
+        # SUV
+        # Van
+        # Classic Car
+        # --------------------------------------------------------
 
-        "motorcycle": {
-            "0-50": 50,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 180,
-        },
+        "larger": [
+            (0, 50, 200),
+            (51, 100, 250),
+            (101, 150, 350),
+            (151, 200, 400),
+            (201, 250, 420),
+            (251, 300, 420),
+            (301, 350, 450),
+            (351, 400, 550),
+            (401, 500, 700),
+            (501, 600, 800),
+            (601, 800, 950),
+            (801, 1000, 1000),
+            (1001, 1200, 1100),
+            (1201, 1300, 1200),
+            (1301, 1500, 1300),
+            (1501, 1800, 1400),
+            (1801, 2000, 1600),
+            (2001, 2500, 1800),
+            (2501, 3000, 2000),
+        ],
 
-        "convertible": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 250,
-        },
 
-        "coupe": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 180,
-        },
+        # --------------------------------------------------------
+        # COMMERCIAL
+        # Pickup
+        # Commercial Truck
+        # --------------------------------------------------------
 
-        "wagon": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 200,
-        },
-
-        "minivan": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 180,
-            "151-200": 250,
-        },
-
-        "commercial-truck": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 250,
-        },
-
-        "rv": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 200,
-        },
-
-        "classic": {
-            "0-50": 80,
-            "51-100": 100,
-            "101-150": 150,
-            "151-200": 200,
-        },
+        "commercial": [
+            (0, 50, 250),
+            (51, 100, 300),
+            (101, 150, 350),
+            (151, 200, 400),
+            (201, 250, 420),
+            (251, 300, 420),
+            (301, 350, 500),
+            (351, 400, 600),
+            (401, 500, 800),
+            (501, 600, 850),
+            (601, 800, 1000),
+            (801, 1000, 1100),
+            (1001, 1200, 1200),
+            (1201, 1300, 1400),
+            (1301, 1500, 1500),
+            (1501, 1800, 1600),
+            (1801, 2000, 1800),
+            (2001, 2500, 2000),
+            (2501, 3000, 2300),
+        ],
     }
 
-    # ========================================================
-    # VALIDATE VEHICLE
-    # ========================================================
+
+    # ============================================================
+    # VALIDATE VEHICLE TYPE
+    # ============================================================
 
     if not vehicle_type:
         return None
 
-    vehicle_type = (
-        str(vehicle_type)
-        .strip()
-        .lower()
-    )
+    vehicle_type = str(vehicle_type).strip().lower()
 
-    if vehicle_type not in rates:
+    category = vehicle_categories.get(vehicle_type)
+
+    if not category:
         return None
 
-    # ========================================================
-    # CONVERT DISTANCE
-    # ========================================================
+
+    # ============================================================
+    # VALIDATE DISTANCE
+    # ============================================================
 
     try:
         distance = float(distance)
-    except (
-        TypeError,
-        ValueError
-    ):
+
+    except (TypeError, ValueError):
         return None
 
     if distance < 0:
         return None
 
-    # ========================================================
-    # FIXED PRICE: 0–50
-    # ========================================================
 
-    if distance <= 50:
+    # ============================================================
+    # FIND FIXED PRICE
+    # ============================================================
 
-        return fixed_prices[
-            vehicle_type
-        ]["0-50"]
+    for minimum, maximum, price in fixed_prices[category]:
 
-    # ========================================================
-    # FIXED PRICE: 51–100
-    # ========================================================
-
-    elif distance <= 100:
-
-        return fixed_prices[
-            vehicle_type
-        ]["51-100"]
-
-    # ========================================================
-    # FIXED PRICE: 101–150
-    # ========================================================
-
-    elif distance <= 150:
-
-        return fixed_prices[
-            vehicle_type
-        ]["101-150"]
-
-    # ========================================================
-    # FIXED PRICE: 151–200
-    # ========================================================
-
-    elif distance <= 200:
-
-        return fixed_prices[
-            vehicle_type
-        ]["151-200"]
-
-    # ========================================================
-    # OVER 200 MILES
-    # ========================================================
-
-    else:
-
-        rate = rates[vehicle_type]
-
-        calculated_price = (
-            distance * rate
-        )
-
-        return round(
-            calculated_price,
-            2
-        )
+        if minimum <= distance <= maximum:
+            return price
 
 
-# ============================================================
-# HOME
-# ============================================================
+    # ============================================================
+    # NO PRICE ABOVE 3000 MILES
+    # ============================================================
+
+    return None
+
+
+    # ============================================================
+    # OLD PER-MILE PRICING SYSTEM
+    # KEEP COMMENTED FOR FUTURE USE
+    # ============================================================
+
+    # rates = {
+    #     "sedan": 0.55,
+    #     "suv": 0.65,
+    #     "pickup": 0.75,
+    #     "van": 0.60,
+    #     "motorcycle": 0.50,
+    #     "convertible": 0.65,
+    #     "coupe": 0.60,
+    #     "wagon": 0.60,
+    #     "minivan": 0.70,
+    #     "commercial-truck": 1.00,
+    #     "rv": 1.10,
+    #     "classic": 0.85,
+    # }
+
+    # rate = rates.get(vehicle_type)
+
+    # if rate is None:
+    #     return None
+
+    # calculated_price = distance * rate
+
+    # return round(calculated_price, 2)
+
 
 def home(request):
 
     if request.method == "POST":
 
-        pickup_city = (
-            request.POST.get(
-                "pickup_city",
-                ""
-            ).strip()
-        )
+        pickup_city = request.POST.get(
+            "pickup_city",
+            ""
+        ).strip()
 
-        delivery_city = (
-            request.POST.get(
-                "delivery_city",
-                ""
-            ).strip()
-        )
+        delivery_city = request.POST.get(
+            "delivery_city",
+            ""
+        ).strip()
 
-        vehicle_type = (
-            request.POST.get(
-                "vehicle_type",
-                ""
-            ).strip().lower()
-        )
+        vehicle_type = request.POST.get(
+            "vehicle_type",
+            ""
+        ).strip().lower()
 
-        pickup_date = (
-            request.POST.get(
-                "pickup_date",
-                ""
-            ).strip()
-        )
+        pickup_date = request.POST.get(
+            "pickup_date",
+            ""
+        ).strip()
 
-        # ====================================================
-        # VALIDATE PICKUP
-        # ====================================================
 
-        pickup_location = get_valid_location(
-            pickup_city
-        )
+        # ========================================================
+        # VALIDATE PICKUP LOCATION
+        # ========================================================
+
+        pickup_location = get_valid_location(pickup_city)
 
         if not pickup_location:
 
@@ -499,13 +376,12 @@ def home(request):
 
             return redirect("home")
 
-        # ====================================================
-        # VALIDATE DELIVERY
-        # ====================================================
 
-        delivery_location = get_valid_location(
-            delivery_city
-        )
+        # ========================================================
+        # VALIDATE DELIVERY LOCATION
+        # ========================================================
+
+        delivery_location = get_valid_location(delivery_city)
 
         if not delivery_location:
 
@@ -516,15 +392,12 @@ def home(request):
 
             return redirect("home")
 
-        # ====================================================
-        # PREVENT SAME ZIP
-        # ====================================================
 
-        if (
-            pickup_location["zip"]
-            ==
-            delivery_location["zip"]
-        ):
+        # ========================================================
+        # SAME LOCATION CHECK
+        # ========================================================
+
+        if pickup_location["zip"] == delivery_location["zip"]:
 
             messages.error(
                 request,
@@ -533,9 +406,10 @@ def home(request):
 
             return redirect("home")
 
-        # ====================================================
-        # VALIDATE VEHICLE
-        # ====================================================
+
+        # ========================================================
+        # VALID VEHICLE TYPES
+        # ========================================================
 
         valid_vehicle_types = {
             "sedan",
@@ -552,6 +426,7 @@ def home(request):
             "classic",
         }
 
+
         if vehicle_type not in valid_vehicle_types:
 
             messages.error(
@@ -561,71 +436,67 @@ def home(request):
 
             return redirect("home")
 
-        # ====================================================
-        # CALCULATE DISTANCE SERVER-SIDE
-        # ====================================================
+
+        # ========================================================
+        # CALCULATE DISTANCE
+        # ========================================================
 
         distance = calculate_distance(
             pickup_location,
             delivery_location
         )
 
-        # ====================================================
-        # CALCULATE PRICE SERVER-SIDE
-        # ====================================================
+
+        # ========================================================
+        # CALCULATE FIXED QUOTE
+        # ========================================================
 
         quote_price = calculate_quote(
             distance,
             vehicle_type
         )
 
+
         if quote_price is None:
 
             messages.error(
                 request,
-                "Unable to calculate the shipping quote."
+                "Unable to calculate the shipping quote for this vehicle and distance."
             )
 
             return redirect("home")
 
-        # ====================================================
-        # STORE ONLY TRUSTED DATA
-        # ====================================================
+
+        # ========================================================
+        # SAVE QUOTE DATA TO SESSION
+        # ========================================================
 
         request.session["quote"] = {
 
-            "pickup_city":
-                format_location(
-                    pickup_location
-                ),
+            "pickup_city": format_location(
+                pickup_location
+            ),
 
-            "delivery_city":
-                format_location(
-                    delivery_location
-                ),
+            "delivery_city": format_location(
+                delivery_location
+            ),
 
-            "pickup_zip":
-                pickup_location["zip"],
+            "pickup_zip": pickup_location["zip"],
 
-            "delivery_zip":
-                delivery_location["zip"],
+            "delivery_zip": delivery_location["zip"],
 
-            "vehicle_type":
-                vehicle_type,
+            "vehicle_type": vehicle_type,
 
-            "pickup_date":
-                pickup_date,
+            "pickup_date": pickup_date,
 
-            "distance":
-                distance,
+            "distance": distance,
 
-            "quote_price":
-                quote_price,
+            "quote_price": quote_price,
         }
 
-        return redirect(
-            "quote_details"
-        )
+
+        return redirect("quote_details")
+
 
     return render(
         request,
@@ -633,22 +504,19 @@ def home(request):
     )
 
 
-# ============================================================
-# QUOTE DETAILS
-# ============================================================
-
 def quote_details(request):
 
-    quote_data = request.session.get(
-        "quote"
-    )
+    quote_data = request.session.get("quote")
+
 
     if not quote_data:
+
         return redirect("home")
 
-    # ========================================================
-    # RE-VALIDATE SESSION DATA
-    # ========================================================
+
+    # ============================================================
+    # VALIDATE LOCATIONS AGAIN
+    # ============================================================
 
     pickup_location = get_valid_location(
         quote_data.get("pickup_city")
@@ -658,10 +526,8 @@ def quote_details(request):
         quote_data.get("delivery_city")
     )
 
-    if (
-        not pickup_location
-        or not delivery_location
-    ):
+
+    if not pickup_location or not delivery_location:
 
         request.session.pop(
             "quote",
@@ -675,15 +541,12 @@ def quote_details(request):
 
         return redirect("home")
 
-    # ========================================================
-    # PREVENT SAME ZIP
-    # ========================================================
 
-    if (
-        pickup_location["zip"]
-        ==
-        delivery_location["zip"]
-    ):
+    # ============================================================
+    # SAME LOCATION CHECK
+    # ============================================================
+
+    if pickup_location["zip"] == delivery_location["zip"]:
 
         request.session.pop(
             "quote",
@@ -697,18 +560,20 @@ def quote_details(request):
 
         return redirect("home")
 
-    # ========================================================
+
+    # ============================================================
     # RECALCULATE DISTANCE
-    # ========================================================
+    # ============================================================
 
     distance = calculate_distance(
         pickup_location,
         delivery_location
     )
 
-    # ========================================================
-    # RECALCULATE PRICE
-    # ========================================================
+
+    # ============================================================
+    # RECALCULATE FIXED QUOTE
+    # ============================================================
 
     vehicle_type = quote_data.get(
         "vehicle_type"
@@ -718,6 +583,7 @@ def quote_details(request):
         distance,
         vehicle_type
     )
+
 
     if quote_price is None:
 
@@ -733,9 +599,10 @@ def quote_details(request):
 
         return redirect("home")
 
-    # ========================================================
-    # UPDATE SESSION WITH TRUSTED VALUES
-    # ========================================================
+
+    # ============================================================
+    # UPDATE SESSION
+    # ============================================================
 
     quote_data["distance"] = distance
 
@@ -751,9 +618,10 @@ def quote_details(request):
 
     request.session["quote"] = quote_data
 
-    # ========================================================
-    # FINAL FORM SUBMISSION
-    # ========================================================
+
+    # ============================================================
+    # SAVE CUSTOMER QUOTE
+    # ============================================================
 
     if request.method == "POST":
 
@@ -767,31 +635,28 @@ def quote_details(request):
                 commit=False
             )
 
-            # ================================================
-            # NEVER TRUST BROWSER PRICE/DISTANCE
-            # ================================================
+            quote.pickup_city = quote_data[
+                "pickup_city"
+            ]
 
-            quote.pickup_city = (
-                quote_data["pickup_city"]
-            )
+            quote.delivery_city = quote_data[
+                "delivery_city"
+            ]
 
-            quote.delivery_city = (
-                quote_data["delivery_city"]
-            )
+            quote.vehicle_type = quote_data[
+                "vehicle_type"
+            ]
 
-            quote.vehicle_type = (
-                quote_data["vehicle_type"]
-            )
-
-            quote.pickup_date = (
-                quote_data["pickup_date"]
-            )
+            quote.pickup_date = quote_data[
+                "pickup_date"
+            ]
 
             quote.distance = distance
 
             quote.quote_price = quote_price
 
             quote.save()
+
 
             return redirect(
                 "quoteSuccess",
@@ -802,23 +667,18 @@ def quote_details(request):
 
         form = QuoteForm()
 
+
     return render(
         request,
         "details.html",
         {
             "quote": quote_data,
             "form": form,
-        }
+        },
     )
 
 
-# ============================================================
-# QUOTE SUCCESS
-# ============================================================
-def quote_success(
-    request,
-    quote_id
-):
+def quote_success(request, quote_id):
 
     quote = get_object_or_404(
         Quote,
@@ -834,10 +694,6 @@ def quote_success(
     )
 
 
-# ============================================================
-# ABOUT
-# ============================================================
-
 def about(request):
 
     return render(
@@ -845,10 +701,6 @@ def about(request):
         "about.html"
     )
 
-
-# ============================================================
-# SERVICES
-# ============================================================
 
 def services(request):
 

@@ -1,0 +1,104 @@
+/* =========================================================
+   KABIR'S TRANSPORT — DJANGO ADMIN
+   ========================================================= */
+
+/* Main header */
+#header {
+    background: #112641;
+    color: white;
+}
+
+#header a:link,
+#header a:visited {
+    color: white;
+}
+
+/* Site title */
+#site-name a {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: #f5f7fa;
+    color: #555;
+}
+
+/* Main content */
+#content {
+    max-width: 1600px;
+}
+
+/* Module/table headers */
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: #112641;
+}
+
+/* Buttons */
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+    background: #112641;
+    border-radius: 6px;
+    border: none;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.submit-row input:hover,
+a.button:hover {
+    background: #112641;
+}
+
+/* Links */
+a:link,
+a:visited {
+    color: #112641;
+}
+
+/* Object tools */
+.object-tools a {
+    border-radius: 6px;
+}
+
+/* Tables */
+#result_list {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#result_list thead th {
+    background: #f5f7fa;
+}
+
+/* Form fields */
+input,
+textarea,
+select {
+    border-radius: 5px;
+}
+
+/* Focus */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #112641;
+    outline: none;
+}
+
+/* Dashboard modules */
+.dashboard .module {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Messages */
+.messagelist li {
+    border-radius: 6px;
+}
