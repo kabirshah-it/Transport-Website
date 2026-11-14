@@ -4,6 +4,7 @@ from .models import Quote
 from .admin_site import transport_admin_site
 @admin.register(Quote, site=transport_admin_site)
 class QuoteAdmin(admin.ModelAdmin):
+    readonly_fields = ("created_at",)
 
     list_display = (
         "customer_name",
