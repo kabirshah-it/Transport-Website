@@ -69,7 +69,7 @@ def get_valid_location(location_text):
     locations = load_locations()
     location = locations.get(zip_code)
 
-    if not location:
+    if not isinstance(location, dict):
         return None
 
     try:
@@ -81,7 +81,16 @@ def get_valid_location(location_text):
     except (KeyError, TypeError, ValueError):
         return None
 
+    # Reject missing or invalid location information.
+    if not city or not state:
+        return None
+
+    # Reject coordinates outside valid geographic ranges.
     if not (-90 <= lat <= 90 and -180 <= lng <= 180):
+        return None
+
+    # Reject placeholder coordinates.
+    if lat == 0 and lng == 0:
         return None
 
     return {
@@ -92,17 +101,46 @@ def get_valid_location(location_text):
         "lng": lng,
     }
 
-
 def format_location(location):
     return f"{location['city']}, {location['state']} {location['zip']}"
 
 
 def calculate_distance(pickup_location, delivery_location):
-    lat1 = math.radians(pickup_location["lat"])
-    lon1 = math.radians(pickup_location["lng"])
+    if not isinstance(pickup_location, dict):
+        raise ValueError("Invalid pickup location.")
 
-    lat2 = math.radians(delivery_location["lat"])
-    lon2 = math.radians(delivery_location["lng"])
+    if not isinstance(delivery_location, dict):
+        raise ValueError("Invalid delivery location.")
+
+    try:
+        lat1 = float(pickup_location["lat"])
+        lon1 = float(pickup_location["lng"])
+
+        lat2 = float(delivery_location["lat"])
+        lon2 = float(delivery_location["lng"])
+
+    except (KeyError, TypeError, ValueError):
+        raise ValueError("Invalid location coordinates.")
+
+    coordinates = (lat1, lon1, lat2, lon2)
+
+    if not all(math.isfinite(value) for value in coordinates):
+        raise ValueError("Location coordinates must be finite.")
+
+    if not (-90 <= lat1 <= 90 and -90 <= lat2 <= 90):
+        raise ValueError("Invalid latitude.")
+
+    if not (-180 <= lon1 <= 180 and -180 <= lon2 <= 180):
+        raise ValueError("Invalid longitude.")
+
+    if (lat1 == 0 and lon1 == 0) or (lat2 == 0 and lon2 == 0):
+        raise ValueError("Placeholder coordinates are not allowed.")
+
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
 
     dlat = lat2 - lat1
     dlon = lon2 - lon1
@@ -114,9 +152,12 @@ def calculate_distance(pickup_location, delivery_location):
         * math.sin(dlon / 2) ** 2
     )
 
+    # Protect against floating-point rounding errors.
+    a = max(0.0, min(1.0, a))
+
     c = 2 * math.atan2(
         math.sqrt(a),
-        math.sqrt(1 - a)
+        math.sqrt(1.0 - a)
     )
 
     earth_radius_miles = 3958.7613
@@ -124,7 +165,6 @@ def calculate_distance(pickup_location, delivery_location):
     distance = earth_radius_miles * c
 
     return round(distance)
-
 
 def calculate_quote(distance, vehicle_type):
     """
