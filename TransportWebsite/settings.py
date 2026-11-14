@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,14 +20,49 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-kj*d_y@!-z+nuit-y++d-^&m9w!76%609k@)+w5@$*j-j(313h'
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-local-development-only"
+)
+
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        "ALLOWED_HOSTS",
+        "127.0.0.1,localhost"
+    ).split(",")
+    if host.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "CSRF_TRUSTED_ORIGINS",
+        ""
+    ).split(",")
+    if origin.strip()
+]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [    host.strip()
+    for host in os.environ.get(
+        "ALLOWED_HOSTS",
+        "127.0.0.1,localhost"
+    ).split(",")
+    if host.strip()]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "CSRF_TRUSTED_ORIGINS",
+        ""
+    ).split(",")
+    if origin.strip()
+]
 # Application definition
 
 INSTALLED_APPS = [
